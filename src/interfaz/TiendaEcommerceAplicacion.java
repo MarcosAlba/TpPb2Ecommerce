@@ -281,4 +281,20 @@ public class TiendaEcommerceAplicacion {
     	
     }
     
+    
+    private static void mostrarProductoMasVendido() {
+
+        Producto producto = tienda.obtenerProductoMasVendido();
+
+        if(producto != null) {
+
+            System.out.println("Producto más vendido: "
+                               + producto.getNombre());
+
+        } else {
+
+            System.out.println("No existen ventas todavía");
+        }
+    }
+    
 }
