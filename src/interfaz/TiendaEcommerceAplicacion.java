@@ -8,7 +8,7 @@ public class TiendaEcommerceAplicacion {
 
     public static void main(String[] args) {
 
-        cargarDatosIniciales(); // productos + usuarios de prueba
+        cargarDatosIniciales(); 
 
         int opcion;
 
@@ -25,12 +25,12 @@ public class TiendaEcommerceAplicacion {
                     Usuario usuario = iniciarSesion();
 
                     if (usuario != null) {
-                        menuUsuario(usuario); // 👈 ENTRA AL SISTEMA PRIVADO
+                        menuUsuario(usuario); 
                     }
                     break;
 
                 case 3:
-                    System.out.println("Gracias por usar el sistema.");
+                	menuReportes();
                     break;
 
                 default:
@@ -237,4 +237,48 @@ public class TiendaEcommerceAplicacion {
         tienda.agregarUsuario(new Usuario("admin@gmail.com", "Admin", "System"));
     }
 
+    
+    
+    private static void menuReportes() {
+    	int opcion;
+    	
+    	do {
+
+            System.out.println("\n===== REPORTES DE TIENDA =====");
+
+            System.out.println("1. Producto más vendido");
+            System.out.println("2. Producto más vendido por categoría");
+            System.out.println("3. Envío más utilizado");
+            System.out.println("4. Volver");
+
+            opcion = teclado.nextInt();
+            teclado.nextLine();
+
+
+            switch(opcion) {
+
+                case 1:
+                    mostrarProductoMasVendido();
+                    break;
+
+                case 2:
+                    mostrarProductoMasVendidoPorCategoria();
+                    break;
+
+                case 3:
+                    mostrarEnvioMasUtilizado();
+                    break;
+
+                case 4:
+                    System.out.println("Volviendo al menú principal");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida");
+            }
+
+        } while(opcion != 4);
+    	
+    }
+    
 }
