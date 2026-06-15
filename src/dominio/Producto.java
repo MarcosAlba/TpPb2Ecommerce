@@ -1,6 +1,7 @@
 package dominio;
 
 public abstract class Producto {
+	private String nombre;
 	private Integer id;
 	private static Integer idAutoIncremental;
 	private Categoria categoria;
@@ -11,7 +12,7 @@ public abstract class Producto {
 	
 	
 	
-	public Producto(Categoria categoria, Double precioBase, Inventario inventario, Oferta oferta) {
+	public Producto(String nombre, Categoria categoria, Double precioBase, Inventario inventario, Oferta oferta) {
 		this.id = Producto.idAutoIncremental++;
 		this.categoria = categoria;
 		this.precioBase = precioBase;
@@ -58,4 +59,14 @@ public abstract class Producto {
 	}
 	
 	public abstract Double calcularPrecioFinal();
+
+
+	public String obtenerDetalle() {
+		String mensaje = "ID: " + this.id +
+                "\nNombre: " + this.nombre +
+                "\nCategoría: " + this.categoria +
+                "\nPrecio: $" + this.calcularPrecioFinal();
+
+			return mensaje;
+	}
 }

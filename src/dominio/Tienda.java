@@ -5,9 +5,11 @@ import java.util.Set;
 
 public class Tienda {
 	private Set<Usuario> usuarios;
+	private Set<Producto> productos;
 	
 	public Tienda() {
 		this.usuarios = new HashSet<>();
+		this.productos = new HashSet<>();
 	}
 	
 	public boolean agregarUsuario(Usuario usuario) throws UsuarioDuplicadoException {
@@ -30,5 +32,10 @@ public class Tienda {
 			}
 		}
 		throw new UsuarioNoEncontradoException("Usuario no encontrado");
+	}
+
+	public String mostrarCatalogo() {
+		// TODO Auto-generated method stub
+		
 	}
 }
