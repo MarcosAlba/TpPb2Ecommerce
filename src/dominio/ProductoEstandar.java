@@ -2,8 +2,8 @@ package dominio;
 
 public class ProductoEstandar extends Producto{
 
-	public ProductoEstandar(Categoria categoria, Double precioBase, Inventario inventario, Oferta oferta) {
-		super(categoria, precioBase, inventario, oferta);
+	public ProductoEstandar(String nombre,Categoria categoria, Double precioBase, Inventario inventario, Oferta oferta) {
+		super(nombre, categoria, precioBase, inventario, oferta);
 	}
 
 	

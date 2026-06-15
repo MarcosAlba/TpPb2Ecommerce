@@ -6,8 +6,8 @@ import java.util.List;
 public class ProductoPersonalizado extends Producto{
 	private List<Opcion> opciones;
 	
-	public ProductoPersonalizado(Categoria categoria, Double precioBase, Inventario inventario, Oferta oferta) {
-		super(categoria, precioBase, inventario, oferta);
+	public ProductoPersonalizado(String nombre,Categoria categoria, Double precioBase, Inventario inventario, Oferta oferta) {
+		super(nombre, categoria, precioBase, inventario, oferta);
 		this.opciones = new ArrayList<>();
 	}
 
