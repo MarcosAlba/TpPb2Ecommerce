@@ -6,60 +6,67 @@ import java.util.Set;
 public class Tienda {
 	private Set<Usuario> usuarios;
 	private Set<Producto> productos;
-	
+
 	public Tienda() {
 		this.usuarios = new HashSet<>();
 		this.productos = new HashSet<>();
 	}
-	
-	public boolean agregarUsuario(Usuario usuario) throws UsuarioDuplicadoException {
-	    try {
-	        this.buscarUsuarioPorCorreo(usuario.getEmail());
 
-	        throw new UsuarioDuplicadoException("El usuario ya existe");
-
-	    } catch (UsuarioNoEncontradoException e) {
-
-	        return this.usuarios.add(usuario);
-	    }
+	public Boolean agregarProducto(Producto producto) {
+		return this.productos.add(producto);
 	}
-	
-	
-	public Usuario buscarUsuarioPorCorreo(String email) throws UsuarioNoEncontradoException {
-		for (Usuario usuario : usuarios) {
-			if(usuario.getEmail().equals(email)) {
-				return usuario;
-			}
+
+	public Boolean eliminarProducto(Producto producto) {
+		Boolean seElimino = false;
+
+		if (this.productos.contains(producto)) {
+			this.productos.remove(producto);
+			seElimino = true;
 		}
-		throw new UsuarioNoEncontradoException("Usuario no encontrado");
+
+		return seElimino;
 	}
 
-	public String mostrarCatalogo() {
-		String mensaje = "===== CATÁLOGO =====\n";
-
-	    for (Producto producto : productos) {
-	        mensaje += producto.obtenerDetalle() + "\n";
-	    }
-
-	    return mensaje;
-	}
-
-	public boolean agregarProducto(Producto producto) throws ProductoDuplicadoException {
-		try {
-			this.buscarProductoPorId(producto.getId());
-			
-			throw new ProductoDuplicadoException("El producto ya existe");
-		} catch (ProductoNoEcontradoException e) {
-			return this.productos.add(producto);
-		}
-	}
-
-	private Producto buscarProductoPorId(Integer id) throws ProductoNoEcontradoException {
-		for (Producto producto : productos) {
-			if(producto.getId().equals(id)) {
+	public Producto buscarProductoPorId(Integer id) throws ProductoNoEncontradoException {
+		for (Producto producto : this.productos) {
+			if (producto.getId().equals(id)) {
 				return producto;
 			}
 		}
-		throw new ProductoNoEcontradoException("Producto no encontrado");
+
+		throw new ProductoNoEncontradoException("Producto no encontrado");
+
 	}
+
+	public Boolean agregarUsuario(Usuario usuario) throws UsuarioDuplicadoException {
+		Boolean seAgrego = true;
+
+		for (Usuario user : this.usuarios) {
+			if (user.getEmail().equals(usuario.getEmail())) {
+				seAgrego = false;
+				throw new UsuarioDuplicadoException("Usuario ya creado");
+			}
+		}
+
+		this.usuarios.add(usuario);
+
+		return seAgrego;
+	}
+
+	public Set<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(Set<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+	public Set<Producto> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(Set<Producto> productos) {
+		this.productos = productos;
+	}
+
 }

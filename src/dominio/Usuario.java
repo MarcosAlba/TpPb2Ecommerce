@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.Objects;
+
 public class Usuario {
 	private String email;
 	private String nombre;
@@ -33,6 +35,23 @@ public class Usuario {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(email, other.email);
 	}
 	
 	
