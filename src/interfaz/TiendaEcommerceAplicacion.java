@@ -2,7 +2,11 @@ package interfaz;
 
 import java.util.Scanner;
 
+import dominio.Categoria;
+import dominio.Inventario;
 import dominio.Producto;
+import dominio.ProductoDuplicadoException;
+import dominio.ProductoEstandar;
 import dominio.Tienda;
 import dominio.Usuario;
 import dominio.UsuarioDuplicadoException;
@@ -226,16 +230,16 @@ public class TiendaEcommerceAplicacion {
     
     
     
-    private static void cargarDatosIniciales() {
+    private static void cargarDatosIniciales() throws ProductoDuplicadoException, UsuarioDuplicadoException {
 
         Inventario inv = new Inventario("M1", 10, 0);
 
         Producto mouse = new ProductoEstandar(
-            1,
             "Mouse Gamer",
             Categoria.ELECTRONICA,
             5000.0,
-            inv
+            inv,
+            null
         );
 
         tienda.agregarProducto(mouse);

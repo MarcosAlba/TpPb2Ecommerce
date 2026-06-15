@@ -43,4 +43,23 @@ public class Tienda {
 
 	    return mensaje;
 	}
+
+	public boolean agregarProducto(Producto producto) throws ProductoDuplicadoException {
+		try {
+			this.buscarProductoPorId(producto.getId());
+			
+			throw new ProductoDuplicadoException("El producto ya existe");
+		} catch (ProductoNoEcontradoException e) {
+			return this.productos.add(producto);
+		}
+	}
+
+	private Producto buscarProductoPorId(Integer id) throws ProductoNoEcontradoException {
+		for (Producto producto : productos) {
+			if(producto.getId().equals(id)) {
+				return producto;
+			}
+		}
+		throw new ProductoNoEcontradoException("Producto no encontrado");
+	}
 }
