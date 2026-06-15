@@ -2,13 +2,17 @@ package interfaz;
 
 import java.util.Scanner;
 
+import dominio.Producto;
+import dominio.Tienda;
 import dominio.Usuario;
+import dominio.UsuarioDuplicadoException;
+import dominio.UsuarioNoEncontradoException;
 
 public class TiendaEcommerceAplicacion {
 	private static final Scanner teclado = new Scanner(System.in);
     private static Tienda tienda = new Tienda();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UsuarioNoEncontradoException {
 
         cargarDatosIniciales(); 
 
@@ -84,7 +88,7 @@ public class TiendaEcommerceAplicacion {
     
     
     
-    private static Usuario iniciarSesion() {
+    private static Usuario iniciarSesion() throws UsuarioNoEncontradoException {
 
         System.out.println("Ingrese email:");
         String email = teclado.nextLine();
