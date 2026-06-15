@@ -16,7 +16,7 @@ public class TiendaEcommerceAplicacion {
 	private static final Scanner teclado = new Scanner(System.in);
     private static Tienda tienda = new Tienda();
 
-    public static void main(String[] args) throws UsuarioNoEncontradoException {
+    public static void main(String[] args) throws UsuarioNoEncontradoException, ProductoDuplicadoException, UsuarioDuplicadoException {
 
         cargarDatosIniciales(); 
 
