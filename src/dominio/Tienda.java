@@ -35,7 +35,12 @@ public class Tienda {
 	}
 
 	public String mostrarCatalogo() {
-		// TODO Auto-generated method stub
-		
+		String mensaje = "===== CATÁLOGO =====\n";
+
+	    for (Producto producto : productos) {
+	        mensaje += producto.obtenerDetalle() + "\n";
+	    }
+
+	    return mensaje;
 	}
 }
