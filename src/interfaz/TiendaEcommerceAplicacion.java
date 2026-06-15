@@ -2,6 +2,8 @@ package interfaz;
 
 import java.util.Scanner;
 
+import dominio.Usuario;
+
 public class TiendaEcommerceAplicacion {
 	private static final Scanner teclado = new Scanner(System.in);
     private static Tienda tienda = new Tienda();
