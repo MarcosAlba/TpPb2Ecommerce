@@ -2,6 +2,7 @@ package dominio;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Tienda {
 	private Set<Usuario> usuarios;
@@ -67,6 +68,14 @@ public class Tienda {
 
 	public void setProductos(Set<Producto> productos) {
 		this.productos = productos;
+	}
+
+	public TreeSet<Producto> obtenerProductosOrdenadosPorNombreDeManeraAscendente() {
+		TreeSet<Producto> resultado = new TreeSet<>();
+		
+		resultado.addAll(this.productos);
+		
+		return resultado;
 	}
 
 }

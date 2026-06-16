@@ -32,5 +32,11 @@ public class ProductoPersonalizado extends Producto {
 
 		return precio;
 	}
+	
+
+	@Override
+	public int compareTo(Producto o) {
+		return super.getPrecioBase().compareTo(o.getPrecioBase());
+	}
 
 }

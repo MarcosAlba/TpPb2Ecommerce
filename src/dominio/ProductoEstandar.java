@@ -20,4 +20,9 @@ public class ProductoEstandar extends Producto{
 		return precioFinal;
 	}
 
+	@Override
+	public int compareTo(Producto o) {
+		return super.getPrecioBase().compareTo(o.getPrecioBase());
+	}
+
 }

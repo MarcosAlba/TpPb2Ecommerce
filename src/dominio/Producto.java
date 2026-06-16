@@ -1,6 +1,6 @@
 package dominio;
 
-public abstract class Producto {
+public abstract class Producto implements Comparable<Producto>{
 	private String nombre;
 	private Integer id;
 	private static Integer idAutoIncremental = 1;

@@ -1,6 +1,11 @@
 package ar.edu.unlam.pb2.test;
 
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -11,6 +16,7 @@ import dominio.Inventario;
 import dominio.Oferta;
 import dominio.ProductoEstandar;
 import dominio.ProductoNoEncontradoException;
+import dominio.ProductoPersonalizado;
 import dominio.Tienda;
 import dominio.Usuario;
 import dominio.UsuarioDuplicadoException;
@@ -80,5 +86,38 @@ public class EcommerceTest {
 		
 		tienda.agregarUsuario(user);
 		tienda.agregarUsuario(user2);
+	}
+	
+	
+	@Test
+	public void dadoQueExisteUnaTiendaCuandoConsultoSusProductosObtengoUnaColeccionOrdenadaDeManeraAscendente() {
+		Tienda tienda = new Tienda();
+		
+		Inventario inventario = new Inventario("Mouse001",20,5);
+		
+		
+		Producto productoEstandar = new ProductoEstandar("Mouse",Categoria.ELECTRONICA,30000.0,inventario,null);
+		
+		
+		Inventario inventario2 = new Inventario("Silla002",100,10);
+		
+		Producto productoPersonalizado = new ProductoPersonalizado("Silla escritorio", Categoria.HOGAR,173000.0,inventario2,null);
+		
+		
+		Inventario inventario3 = new Inventario("Camiseta003",1000,50);
+	
+		Producto camiseta = new ProductoEstandar("Camiseta Seleccion Argentian",Categoria.DEPORTES,100000.0,inventario3,null);
+		
+		tienda.agregarProducto(productoEstandar);
+		tienda.agregarProducto(productoPersonalizado);
+		tienda.agregarProducto(camiseta);
+		
+		Set<Producto> resultado = tienda.obtenerProductosOrdenadosPorNombreDeManeraAscendente();
+		
+		List<Producto> lista = new ArrayList<>(resultado);
+
+		assertEquals(productoEstandar.getPrecioBase(),lista.get(0).getPrecioBase());
+		assertEquals(camiseta.getPrecioBase(),lista.get(1).getPrecioBase());
+		assertEquals(productoPersonalizado.getPrecioBase(),lista.get(2).getPrecioBase());
 	}
 }
