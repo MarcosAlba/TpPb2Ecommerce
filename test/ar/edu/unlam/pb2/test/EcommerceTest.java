@@ -14,6 +14,8 @@ import org.junit.Test;
 import dominio.Categoria;
 import dominio.Inventario;
 import dominio.Oferta;
+import dominio.OfertaConPorcentaje;
+import dominio.Opcion;
 import dominio.ProductoEstandar;
 import dominio.ProductoNoEncontradoException;
 import dominio.ProductoPersonalizado;
@@ -185,4 +187,33 @@ public class EcommerceTest {
 		assertEquals(lista.get(1).getNombre(),microfono.getNombre());
 		assertEquals(lista.get(2).getNombre(),libro.getNombre());
 	}
+	
+	
+	//Tests nuevos para probar el precioFinal con oferta
+	@Test
+	public void dadoQueExisteUnProductoPersonalizadoConUnaOfertaDelVeintePorCientoSeDebePoderObtenerSuPrecioFinal() {
+		Tienda tienda = new Tienda();
+		
+		Inventario inventario = new Inventario("Cinta001",1000,100);
+		
+		Oferta oferta = new OfertaConPorcentaje(20.0);
+		
+		Producto cintaDeCorrer = new ProductoPersonalizado("Cinta de correr electrica",Categoria.DEPORTES,615553.0,inventario,oferta);
+		
+		tienda.agregarProducto(cintaDeCorrer);
+		
+		Opcion motorPremium = new Opcion("motor premium",50000.0);
+		
+		Opcion pantallaTactil = new Opcion("pantalla tactil",30000.0);
+		
+		ProductoPersonalizado productoPersonalizadoCinta = (ProductoPersonalizado) cintaDeCorrer;
+	
+		productoPersonalizadoCinta.agregarOpcion(motorPremium);
+		productoPersonalizadoCinta.agregarOpcion(pantallaTactil);
+		
+		Double precioTotal = tienda.obtenerPrecioFinal();
+		
+		assertEquals(556442.4,precioTotal,0.01);
+	}
+	
 }

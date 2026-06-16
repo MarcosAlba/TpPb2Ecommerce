@@ -93,5 +93,14 @@ public class Tienda {
 		
 		return resultado;
 	}
+	
+	
+	public Double obtenerPrecioFinal() {
+		Double suma = 0.0;
+		for (Producto producto : productos) {
+			suma += producto.calcularPrecioFinal();
+		}
+		return suma;
+	}
 
 }
