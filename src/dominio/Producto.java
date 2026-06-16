@@ -11,6 +11,7 @@ public abstract class Producto implements Comparable<Producto>{
 
 	public Producto(String nombre, Categoria categoria, Double precioBase, Inventario inventario, Oferta oferta) {
 		this.id = Producto.idAutoIncremental++;
+		this.nombre = nombre;
 		this.categoria = categoria;
 		this.precioBase = precioBase;
 		this.inventario = inventario;
@@ -63,6 +64,17 @@ public abstract class Producto implements Comparable<Producto>{
 
 	public void setOferta(Oferta oferta) {
 		this.oferta = oferta;
+	}
+	
+	
+	
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public abstract Double calcularPrecioFinal();

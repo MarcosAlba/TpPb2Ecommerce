@@ -152,4 +152,37 @@ public class EcommerceTest {
 		assertEquals(bateriaCocina.getPrecioBase(),lista.get(1).getPrecioBase());
 		assertEquals(gorra.getPrecioBase(),lista.get(2).getPrecioBase());
 	}
+	
+	
+	@Test
+	public void dadoQueExisteUnaTiendaCuandoConsultoElNombreDeLosProductosSeOrdenanDeFormaAscendente() {
+		Tienda tienda = new Tienda();
+		
+		Inventario inventario = new Inventario("M004",100,20);
+		
+		Producto microfono = new ProductoEstandar("Microfono",Categoria.ELECTRONICA,32999.0,inventario,null);
+		
+		tienda.agregarProducto(microfono);
+		
+		Inventario inventario2 = new Inventario("CO104",3000,50);
+		
+		Producto colchon = new ProductoPersonalizado("Colchon",Categoria.HOGAR,209999.0,inventario2,null);
+		
+		tienda.agregarProducto(colchon);
+		
+		Inventario inventario3 = new Inventario("L01",10,5);
+		
+		Producto libro = new ProductoEstandar("Padre rico y padre pobre",Categoria.LIBROS,70000.0,inventario3,null);
+		
+		tienda.agregarProducto(libro);
+		
+		Set<Producto> resultado = tienda.obtenerProductosOrdenadosPorNombreDeFormaAscendente();
+		
+		
+		List<Producto> lista = new ArrayList<>(resultado);
+		
+		assertEquals(lista.get(0).getNombre(),colchon.getNombre());
+		assertEquals(lista.get(1).getNombre(),microfono.getNombre());
+		assertEquals(lista.get(2).getNombre(),libro.getNombre());
+	}
 }
