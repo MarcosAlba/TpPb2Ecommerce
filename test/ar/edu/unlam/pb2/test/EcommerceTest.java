@@ -91,6 +91,39 @@ public class EcommerceTest {
 	}
 	
 	
+	@Test 
+	public void dadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSeVerificaSiTieneStock() {
+		Tienda tienda = new Tienda();
+	    Inventario inventario = new Inventario("0317-0471", 10, 0);
+	    Oferta oferta = null;
+ 
+	    Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
+	    tienda.agregarProducto(producto);
+ 
+	    Usuario usuario = new Usuario("gianmice@gmail.com", "Gian", "Mice");
+ 
+	    Boolean resultado = tienda.agregarProductoAlCarrito(usuario, producto.getId(), 3);
+ 
+	    assertTrue(resultado);
+	}
+	
+	
+	@Test(expected = StockInsuficienteException.class)
+	public void DadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSinStockSuficienteLanzaUnaExcepción() throws StockInsuficienteException {
+	    Tienda tienda = new Tienda();
+	    Inventario inventario = new Inventario("0317-0471", 2, 0);
+	    Oferta oferta = null;
+ 
+	    Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
+	    tienda.agregarProducto(producto);
+ 
+	    Usuario usuario = new Usuario("gianmice@gmail.com", "Gian", "Mice");
+ 
+	    tienda.agregarProductoAlCarrito(usuario, producto.getId(), 10);
+	}
+	
+	
+	
 	@Test
 	public void dadoQueExisteUnaTiendaCuandoConsultoSusProductosObtengoUnaColeccionOrdenadaDeManeraAscendente() {
 		Tienda tienda = new Tienda();
