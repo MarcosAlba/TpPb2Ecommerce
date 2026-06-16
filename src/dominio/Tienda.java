@@ -78,4 +78,12 @@ public class Tienda {
 		return resultado;
 	}
 
+	public Set<Producto> obtenerProductosOrdenadosPorPrecioDeManeraDescendente() {
+		TreeSet<Producto> resultado = new TreeSet<>(new PrecioDeProductosOrdenadosDeManeraDescendente());
+		
+		resultado.addAll(this.productos);
+		
+		return resultado;
+	}
+
 }

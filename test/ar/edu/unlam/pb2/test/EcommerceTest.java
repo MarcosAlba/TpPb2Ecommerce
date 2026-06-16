@@ -120,4 +120,36 @@ public class EcommerceTest {
 		assertEquals(camiseta.getPrecioBase(),lista.get(1).getPrecioBase());
 		assertEquals(productoPersonalizado.getPrecioBase(),lista.get(2).getPrecioBase());
 	}
+	
+	
+	@Test 
+	public void dadoQueExisteUnaTiendaCuandoElPrecioDeLosProductosEstosSeOrdenanDeManeraDescendente() {
+		Tienda tienda = new Tienda();
+		
+		Inventario inventario = new Inventario("Gorra1001",30,5);
+		
+		Producto gorra = new ProductoEstandar("Gorra",Categoria.DEPORTES,43000.0,inventario,null);
+		
+		tienda.agregarProducto(gorra);
+		
+		Inventario inventario2 = new Inventario("KingOfTheKongo003",1500,300);
+		
+		Producto buzoOverSize = new ProductoPersonalizado("Buzo king of the kongo",Categoria.DEPORTES,144990.0,inventario2,null);
+		
+		tienda.agregarProducto(buzoOverSize);
+		
+		Inventario inventario3 = new Inventario("MTA001",3000,1000);
+		
+		Producto bateriaCocina = new ProductoPersonalizado("Bateria cocina mta 5 piezas",Categoria.HOGAR,75225.0,inventario3,null);
+		
+		tienda.agregarProducto(bateriaCocina);
+		
+		Set<Producto> resultado = tienda.obtenerProductosOrdenadosPorPrecioDeManeraDescendente();
+		
+		List<Producto> lista = new ArrayList<>(resultado);
+		
+		assertEquals(buzoOverSize.getPrecioBase(),lista.get(0).getPrecioBase());
+		assertEquals(bateriaCocina.getPrecioBase(),lista.get(1).getPrecioBase());
+		assertEquals(gorra.getPrecioBase(),lista.get(2).getPrecioBase());
+	}
 }
