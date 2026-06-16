@@ -7,6 +7,7 @@ import dominio.Inventario;
 import dominio.Producto;
 import dominio.ProductoDuplicadoException;
 import dominio.ProductoEstandar;
+import dominio.ProductoNoEncontradoException;
 import dominio.Tienda;
 import dominio.Usuario;
 import dominio.UsuarioDuplicadoException;
@@ -171,7 +172,13 @@ public class TiendaEcommerceAplicacion {
     
     
     
-    private static void agregarAlCarrito(Usuario usuario) {
+    private static void mostrarOrdenes(Usuario usuario) {
+		
+	}
+
+
+
+	private static void agregarAlCarrito(Usuario usuario) {
 
         System.out.println("ID producto:");
         int id = teclado.nextInt();
@@ -186,6 +193,17 @@ public class TiendaEcommerceAplicacion {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    private static void buscarProducto() {
+    	System.out.println("Ingrese el id del producto");
+    	Integer id = teclado.nextInt();
+    	try {
+    	Producto productoBuscado = tienda.buscarProductoPorId(id);
+    	System.out.println(productoBuscado.obtenerDetalle());
+    	} catch (ProductoNoEncontradoException e) {
+    		System.out.println(e.getMessage());
+    	}
     }
     
     

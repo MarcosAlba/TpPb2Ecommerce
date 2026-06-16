@@ -54,6 +54,9 @@ public class Tienda {
 		return seAgrego;
 	}
 
+	
+	
+	
 	public Set<Usuario> getUsuarios() {
 		return usuarios;
 	}
@@ -101,6 +104,25 @@ public class Tienda {
 			suma += producto.calcularPrecioFinal();
 		}
 		return suma;
+	}
+
+	public Usuario buscarUsuarioPorCorreo(String email) throws UsuarioNoEncontradoException {
+		for (Usuario usuario : this.usuarios) {
+			if(usuario.getEmail().equals(email)) {
+				return usuario;
+			}
+		}
+		throw new UsuarioNoEncontradoException("Usuario no encontrado");
+	}
+
+	public String mostrarCatalogo() {
+		String mensaje = "===== CATÁLOGO =====\n";
+		
+		for (Producto producto : productos) {
+			mensaje += producto.obtenerDetalle() + "\n";
+	    }
+		
+		return mensaje;
 	}
 
 }
