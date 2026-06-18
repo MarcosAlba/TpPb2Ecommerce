@@ -6,11 +6,13 @@ public class Usuario {
 	private String email;
 	private String nombre;
 	private String apellido;
+	private Carrito carrito;
 	
-	public Usuario(String email, String nombre, String apellido) {
+	public Usuario(String email, String nombre, String apellido,Carrito carrito) {
 		this.email = email;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.carrito = carrito;
 	}
 
 	public String getEmail() {
@@ -35,6 +37,16 @@ public class Usuario {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+	
+	
+
+	public Carrito getCarrito() {
+		return carrito;
+	}
+
+	public void setCarrito(Carrito carrito) {
+		this.carrito = carrito;
 	}
 
 	@Override

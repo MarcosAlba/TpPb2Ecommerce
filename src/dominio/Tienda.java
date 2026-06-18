@@ -125,4 +125,28 @@ public class Tienda {
 		return mensaje;
 	}
 
+	public Boolean agregarProductoAlCarrito(Usuario usuario, Integer id, Integer cantidad) throws ProductoNoEncontradoException, StockInsuficienteException {
+		Producto encontrado = this.buscarProductoPorId(id);
+		
+		if(encontrado == null) {
+			throw new ProductoNoEncontradoException("No se encontro el producto");
+		}
+		Inventario inventario = encontrado.getInventario();
+		
+		if (!inventario.hayStock(cantidad)) {
+			throw new StockInsuficienteException(
+		            "No hay stock suficiente");
+	    }
+		
+		 LineaDeCarrito linea = new LineaDeCarrito(encontrado, cantidad);
+		
+		 if (usuario.getCarrito().agregarLinea(linea)) {
+		        inventario.reservar(cantidad);
+		        return true;
+		    }
+		 
+		 return false;
+	
+	}
+
 }
