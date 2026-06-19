@@ -169,7 +169,7 @@ public class Tienda {
 		}
 		
 		for (LineaDeCarrito lineasDeCarrito : carrito.getLineas()) {
-			LineasDeOrden lineaNueva = new LineasDeOrden();
+			LineasDeOrden lineaNueva = new LineasDeOrden(lineasDeCarrito.getProducto(),lineasDeCarrito.getCantidad());
 			
 			Orden orden = new Orden(buscado,codigo,estado);
 			

@@ -23,5 +23,7 @@ public class Carrito {
 		return lineas;
 	}
 	
-	
+	public void vaciar() {
+	    this.lineas.clear();
+	}
 }
