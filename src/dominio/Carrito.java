@@ -18,5 +18,10 @@ public class Carrito {
 	public boolean eliminarLinea(LineaDeCarrito linea) {
 		return this.lineas.remove(linea);
 	}
+
+	public List<LineaDeCarrito> getLineas() {
+		return lineas;
+	}
+	
 	
 }

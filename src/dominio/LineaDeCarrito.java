@@ -4,7 +4,6 @@ public class LineaDeCarrito {
 	private Producto producto;
 	private Integer cantidad;
 	
-	
 	public LineaDeCarrito(Producto producto, Integer cantidad) {
 		this.producto = producto;
 		this.cantidad = cantidad;
@@ -34,6 +33,8 @@ public class LineaDeCarrito {
 	public Double obtenerSubTotal() {
 		return this.producto.getPrecioBase() * this.cantidad;
 	}
+
+	
 	
 	
 }

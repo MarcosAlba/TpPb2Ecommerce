@@ -1,16 +1,20 @@
 package dominio;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class Tienda {
 	private Set<Usuario> usuarios;
 	private Set<Producto> productos;
-
+	private List<Orden> ordenes;
+	
 	public Tienda() {
 		this.usuarios = new HashSet<>();
 		this.productos = new HashSet<>();
+		this.ordenes = new ArrayList<>();
 	}
 
 	public Boolean agregarProducto(Producto producto) {
@@ -148,5 +152,40 @@ public class Tienda {
 		 return false;
 	
 	}
+	
+	
+	
+	
+	public boolean generarOrden(String email,String codigo,Estado estado) throws CarritoVacioException, UsuarioNoEncontradoException, ProductoNoEncontradoException {
+		
+		Usuario buscado = this.buscarUsuarioPorCorreo(email);
+		
+		Carrito carrito = buscado.getCarrito();
+		
+		Integer cantidadDeLineas = carrito.getLineas().size();
+		
+		if(cantidadDeLineas == 0) {
+			throw new CarritoVacioException();
+		}
+		
+		for (LineaDeCarrito lineasDeCarrito : carrito.getLineas()) {
+			LineasDeOrden lineaNueva = new LineasDeOrden();
+			
+			Orden orden = new Orden(buscado,codigo,estado);
+			
+			orden.agregarLineaDeOrden(lineaNueva);
+			
+			orden.setEstado(Estado.CONFIRMADA);
+			
+			carrito.vaciar();
+			
+			return this.ordenes.add(orden);
+		}
+		
+		return false;
+	}
+
+	
+	
 
 }

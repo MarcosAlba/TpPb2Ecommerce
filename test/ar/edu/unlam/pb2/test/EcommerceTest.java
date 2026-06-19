@@ -405,4 +405,8 @@ public class EcommerceTest {
 		
 	}
 	*/
+	
+	
+	@Test
+	public void dadoQueExisteUnaTiendaCuando
 }
