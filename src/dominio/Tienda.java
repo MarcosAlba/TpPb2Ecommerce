@@ -156,35 +156,33 @@ public class Tienda {
 	
 	
 	
-	public boolean generarOrden(String email,String codigo,Estado estado) throws CarritoVacioException, UsuarioNoEncontradoException, ProductoNoEncontradoException {
-		
-		Usuario buscado = this.buscarUsuarioPorCorreo(email);
-		
-		Carrito carrito = buscado.getCarrito();
-		
-		Integer cantidadDeLineas = carrito.getLineas().size();
-		
-		if(cantidadDeLineas == 0) {
+	public Orden generarOrden(String email,String codigo,Estado estado,Envio envio)throws CarritoVacioException,UsuarioNoEncontradoException {
+
+		Usuario usuario = this.buscarUsuarioPorCorreo(email);
+
+		Carrito carrito = usuario.getCarrito();
+
+		if (carrito.getLineas().isEmpty()) {
 			throw new CarritoVacioException();
 		}
-		
-		for (LineaDeCarrito lineasDeCarrito : carrito.getLineas()) {
-			LineasDeOrden lineaNueva = new LineasDeOrden(lineasDeCarrito.getProducto(),lineasDeCarrito.getCantidad());
-			
-			Orden orden = new Orden(buscado,codigo,estado);
-			
-			orden.agregarLineaDeOrden(lineaNueva);
-			
-			orden.setEstado(Estado.CONFIRMADA);
-			
-			carrito.vaciar();
-			
-			return this.ordenes.add(orden);
-		}
-		
-		return false;
-	}
 
+		Orden orden = new Orden(usuario, codigo, estado, envio);
+
+		for (LineaDeCarrito lineaCarrito : carrito.getLineas()) {
+
+				LineasDeOrden lineaOrden =new LineasDeOrden(lineaCarrito.getProducto(),lineaCarrito.getCantidad());
+
+					orden.agregarLineaDeOrden(lineaOrden);
+			}
+
+				orden.setEstado(Estado.CONFIRMADA);
+
+					this.ordenes.add(orden);
+
+					carrito.vaciar();
+
+					return orden;
+		}
 	
 	
 

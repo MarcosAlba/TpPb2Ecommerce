@@ -2,12 +2,15 @@ package interfaz;
 
 import java.util.Scanner;
 
+import dominio.Carrito;
 import dominio.Categoria;
+import dominio.Estado;
 import dominio.Inventario;
 import dominio.Producto;
 import dominio.ProductoDuplicadoException;
 import dominio.ProductoEstandar;
 import dominio.ProductoNoEncontradoException;
+import dominio.StockInsuficienteException;
 import dominio.Tienda;
 import dominio.Usuario;
 import dominio.UsuarioDuplicadoException;
@@ -79,8 +82,10 @@ public class TiendaEcommerceAplicacion {
 
         System.out.println("Apellido:");
         String apellido = teclado.nextLine();
+        
+        Carrito carrito = new Carrito();
 
-        Usuario usuario = new Usuario(email, nombre, apellido);
+        Usuario usuario = new Usuario(email, nombre, apellido,carrito);
 
         try {
             tienda.agregarUsuario(usuario);
@@ -178,7 +183,7 @@ public class TiendaEcommerceAplicacion {
 
 
 
-	private static void agregarAlCarrito(Usuario usuario) {
+    private static void agregarAlCarrito(Usuario usuario) {
 
         System.out.println("ID producto:");
         int id = teclado.nextInt();
@@ -187,11 +192,19 @@ public class TiendaEcommerceAplicacion {
         int cantidad = teclado.nextInt();
 
         try {
+
             tienda.agregarProductoAlCarrito(usuario, id, cantidad);
+
             System.out.println("Producto agregado al carrito");
 
-        } catch (Exception e) {
+        } catch (StockInsuficienteException e) {
+
+            System.out.println("Stock insuficiente");
+
+        } catch (ProductoNoEncontradoException e) {
+
             System.out.println(e.getMessage());
+
         }
     }
     
@@ -235,11 +248,19 @@ public class TiendaEcommerceAplicacion {
                     System.out.println("Opción inválida");
                     return;
             }
+            
+            
+            System.out.println("Ingrese el código: ");
+            String codigo = teclado.nextLine();
 
-            Orden orden = tienda.finalizarCompra(usuario, envio);
+            System.out.println("Ingrese el estado de la orden: ");
+            
+            boolean seGenero = tienda.generarOrden(usuario.getEmail(), codigo, Estado.CONFIRMADA);
 
-            System.out.println("Compra realizada con éxito");
-            System.out.println(orden.obtenerDetalle());
+            if(seGenero) {
+                System.out.println("Compra realizada con éxito");
+            }
+            
 
         } catch (CarritoVacioException e) {
             System.out.println("El carrito está vacío");
@@ -262,7 +283,7 @@ public class TiendaEcommerceAplicacion {
 
         tienda.agregarProducto(mouse);
 
-        tienda.agregarUsuario(new Usuario("admin@gmail.com", "Admin", "System"));
+        tienda.agregarUsuario(new Usuario("admin@gmail.com", "Admin", "System",null));
     }
 
     
