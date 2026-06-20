@@ -316,218 +316,113 @@ public class EcommerceTest {
 	@Test
 	public void dadoQueExisteUnaTiendaCuandoConsultoLosProductosObtengoElTotalVendidoPorCadaCategoria() throws UsuarioDuplicadoException, CarritoVacioException, UsuarioNoEncontradoException {
 		Tienda tienda = new Tienda();
-	
-		Usuario usuario = new Usuario(
-	            "juan@gmail.com",
-	            "Juan",
-	            "Perez",
-	            new Carrito());
 
-	    Usuario usuario2 = new Usuario(
-	            "damian@gmail.com",
-	            "Damian",
-	            "Ramirez",
-	            new Carrito());
+		Usuario usuario = new Usuario("juan@gmail.com", "Juan", "Perez", new Carrito());
 
-	    Usuario usuario3 = new Usuario(
-	            "ana@gmail.com",
-	            "Ana",
-	            "Lopez",
-	            new Carrito());
+		Usuario usuario2 = new Usuario("damian@gmail.com", "Damian", "Ramirez", new Carrito());
 
-	    tienda.agregarUsuario(usuario);
-	    tienda.agregarUsuario(usuario2);
-	    tienda.agregarUsuario(usuario3);
-	    
-	    
-	    
-	    Inventario inventarioPantalon =
-	            new Inventario("D1", 100, 10);
+		Usuario usuario3 = new Usuario("ana@gmail.com", "Ana", "Lopez", new Carrito());
 
-	    Oferta ofertaPantalon =
-	            new OfertaConPorcentaje(20.0);
+		tienda.agregarUsuario(usuario);
+		tienda.agregarUsuario(usuario2);
+		tienda.agregarUsuario(usuario3);
 
-	    Producto pantalon =
-	            new ProductoEstandar(
-	                    "Pantalon deportivo",
-	                    Categoria.DEPORTES,
-	                    69900.0,
-	                    inventarioPantalon,
-	                    ofertaPantalon);
+		Inventario inventarioPantalon = new Inventario("D1", 100, 10);
 
-	    Inventario inventarioZapatillas =
-	            new Inventario("D2", 30000, 2000);
+		Oferta ofertaPantalon = new OfertaConPorcentaje(20.0);
 
-	    Oferta ofertaZapatillas =
-	            new OfertaConPorcentaje(10.0);
+		Producto pantalon = new ProductoEstandar("Pantalon deportivo", Categoria.DEPORTES, 69900.0, inventarioPantalon,
+				ofertaPantalon);
 
-	    Producto zapatillas =
-	            new ProductoPersonalizado(
-	                    "Zapatillas running",
-	                    Categoria.DEPORTES,
-	                    51300.0,
-	                    inventarioZapatillas,
-	                    ofertaZapatillas);
+		Inventario inventarioZapatillas = new Inventario("D2", 30000, 2000);
 
-	    Inventario inventarioGuantes =
-	            new Inventario("D3", 5000, 200);
+		Oferta ofertaZapatillas = new OfertaConPorcentaje(10.0);
 
-	    Oferta ofertaGuantes =
-	            new OfertaConPorcentaje(15.0);
+		Producto zapatillas = new ProductoPersonalizado("Zapatillas running", Categoria.DEPORTES, 51300.0,
+				inventarioZapatillas, ofertaZapatillas);
 
-	    Producto guantes =
-	            new ProductoEstandar(
-	                    "Guantes de arquero",
-	                    Categoria.DEPORTES,
-	                    29779.0,
-	                    inventarioGuantes,
-	                    ofertaGuantes);
-	    
-	    
-	    Inventario inventarioDispenser =
-	            new Inventario("H1", 1000, 20);
+		Inventario inventarioGuantes = new Inventario("D3", 5000, 200);
 
-	    Oferta ofertaDispenser =
-	            new OfertaConPorcentaje(46.0);
+		Oferta ofertaGuantes = new OfertaConPorcentaje(15.0);
 
-	    Producto dispenser =
-	            new ProductoPersonalizado(
-	                    "Dispenser de agua",
-	                    Categoria.HOGAR,
-	                    181720.0,
-	                    inventarioDispenser,
-	                    ofertaDispenser);
+		Producto guantes = new ProductoEstandar("Guantes de arquero", Categoria.DEPORTES, 29779.0, inventarioGuantes,
+				ofertaGuantes);
 
-	    Inventario inventarioTender =
-	            new Inventario("H2", 3000, 2000);
+		Inventario inventarioDispenser = new Inventario("H1", 1000, 20);
 
-	    Producto tender =
-	            new ProductoPersonalizado(
-	                    "Tender vertical para ropa",
-	                    Categoria.HOGAR,
-	                    75248.0,
-	                    inventarioTender,
-	                    null);
+		Oferta ofertaDispenser = new OfertaConPorcentaje(46.0);
 
-	    Inventario inventarioMate =
-	            new Inventario("H3", 2000, 500);
+		Producto dispenser = new ProductoPersonalizado("Dispenser de agua", Categoria.HOGAR, 181720.0,
+				inventarioDispenser, ofertaDispenser);
 
-	    Producto mate =
-	            new ProductoEstandar(
-	                    "Mate justo imperial",
-	                    Categoria.HOGAR,
-	                    11000.0,
-	                    inventarioMate,
-	                    null);
+		Inventario inventarioTender = new Inventario("H2", 3000, 2000);
 
-	    Inventario inventario7 = new Inventario("CV002", 1000, 100);
-	    Oferta oferta5 = new OfertaConPorcentaje(48.0);
-	    
-	    
-	    Producto colchon = new ProductoEstandar(
-	            "Colchon viggo",
-	            Categoria.HOGAR,
-	            626289.0,
-	            inventario7,
-	            oferta5);
-	    
-	    
-	    Inventario inventarioCooler =
-	            new Inventario("E1", 3000, 200);
+		Producto tender = new ProductoPersonalizado("Tender vertical para ropa", Categoria.HOGAR, 75248.0,
+				inventarioTender, null);
 
-	    Oferta ofertaCooler =
-	            new OfertaConPorcentaje(54.0);
+		Inventario inventarioMate = new Inventario("H3", 2000, 500);
 
-	    Producto cooler =
-	            new ProductoPersonalizado(
-	                    "Kit 3 coolers",
-	                    Categoria.ELECTRONICA,
-	                    27298.0,
-	                    inventarioCooler,
-	                    ofertaCooler);
+		Producto mate = new ProductoEstandar("Mate justo imperial", Categoria.HOGAR, 11000.0, inventarioMate, null);
 
-	    Inventario inventarioVentilador =
-	            new Inventario("E2", 3000, 2000);
+		Inventario inventario7 = new Inventario("CV002", 1000, 100);
+		Oferta oferta5 = new OfertaConPorcentaje(48.0);
 
-	    Oferta ofertaVentilador =
-	            new OfertaConPorcentaje(52.0);
+		Producto colchon = new ProductoEstandar("Colchon viggo", Categoria.HOGAR, 626289.0, inventario7, oferta5);
 
-	    Producto ventilador =
-	            new ProductoEstandar(
-	                    "Ventilador de techo",
-	                    Categoria.ELECTRONICA,
-	                    96485.0,
-	                    inventarioVentilador,
-	                    ofertaVentilador);
-	    
-	    
-	    tienda.agregarProducto(pantalon);
-	    tienda.agregarProducto(zapatillas);
-	    tienda.agregarProducto(guantes);
+		Inventario inventarioCooler = new Inventario("E1", 3000, 200);
 
-	    tienda.agregarProducto(dispenser);
-	    tienda.agregarProducto(tender);
-	    tienda.agregarProducto(mate);
-	    tienda.agregarProducto(colchon);
-	    
-	    tienda.agregarProducto(cooler);
-	    tienda.agregarProducto(ventilador);
-	    
-	    
-	    usuario.getCarrito().agregarLinea(
-	            new LineaDeCarrito(pantalon, 40));
+		Oferta ofertaCooler = new OfertaConPorcentaje(54.0);
 
-	    usuario.getCarrito().agregarLinea(
-	            new LineaDeCarrito(zapatillas, 100));
+		Producto cooler = new ProductoPersonalizado("Kit 3 coolers", Categoria.ELECTRONICA, 27298.0, inventarioCooler,
+				ofertaCooler);
 
-	    usuario.getCarrito().agregarLinea(
-	            new LineaDeCarrito(guantes, 500));
-	    
-	    
-	    usuario2.getCarrito().agregarLinea(
-	            new LineaDeCarrito(dispenser, 100));
+		Inventario inventarioVentilador = new Inventario("E2", 3000, 2000);
 
-	    usuario2.getCarrito().agregarLinea(
-	            new LineaDeCarrito(tender, 30));
+		Oferta ofertaVentilador = new OfertaConPorcentaje(52.0);
 
-	    usuario2.getCarrito().agregarLinea(
-	            new LineaDeCarrito(mate, 50));
-	    
-	    
-	    usuario3.getCarrito().agregarLinea(
-	            new LineaDeCarrito(colchon, 100));
+		Producto ventilador = new ProductoEstandar("Ventilador de techo", Categoria.ELECTRONICA, 96485.0,
+				inventarioVentilador, ofertaVentilador);
 
-	    usuario3.getCarrito().agregarLinea(
-	            new LineaDeCarrito(cooler, 300));
+		tienda.agregarProducto(pantalon);
+		tienda.agregarProducto(zapatillas);
+		tienda.agregarProducto(guantes);
 
-	    usuario3.getCarrito().agregarLinea(
-	            new LineaDeCarrito(ventilador, 200));
-	    
-	    Envio envio = new EnvioEstandar();
-	    
-	    tienda.generarOrden(
-	            usuario.getEmail(),
-	            "ORD001",
-	            Estado.PENDIENTE,
-	            envio);
+		tienda.agregarProducto(dispenser);
+		tienda.agregarProducto(tender);
+		tienda.agregarProducto(mate);
+		tienda.agregarProducto(colchon);
 
-	    tienda.generarOrden(
-	            usuario2.getEmail(),
-	            "ORD002",
-	            Estado.PENDIENTE,
-	            envio);
+		tienda.agregarProducto(cooler);
+		tienda.agregarProducto(ventilador);
 
-	    tienda.generarOrden(
-	            usuario3.getEmail(),
-	            "ORD003",
-	            Estado.PENDIENTE,
-	            envio);
-	    
-	    
-	    
-	    Map<Categoria, Double> resultado =
-	            tienda.obtenerTotalVendidoPorCategoria();
-	    
+		usuario.getCarrito().agregarLinea(new LineaDeCarrito(pantalon, 40));
+
+		usuario.getCarrito().agregarLinea(new LineaDeCarrito(zapatillas, 100));
+
+		usuario.getCarrito().agregarLinea(new LineaDeCarrito(guantes, 500));
+
+		usuario2.getCarrito().agregarLinea(new LineaDeCarrito(dispenser, 100));
+
+		usuario2.getCarrito().agregarLinea(new LineaDeCarrito(tender, 30));
+
+		usuario2.getCarrito().agregarLinea(new LineaDeCarrito(mate, 50));
+
+		usuario3.getCarrito().agregarLinea(new LineaDeCarrito(colchon, 100));
+
+		usuario3.getCarrito().agregarLinea(new LineaDeCarrito(cooler, 300));
+
+		usuario3.getCarrito().agregarLinea(new LineaDeCarrito(ventilador, 200));
+
+		Envio envio = new EnvioEstandar();
+
+		tienda.generarOrden(usuario.getEmail(), "ORD001", Estado.PENDIENTE, envio);
+
+		tienda.generarOrden(usuario2.getEmail(), "ORD002", Estado.PENDIENTE, envio);
+
+		tienda.generarOrden(usuario3.getEmail(), "ORD003", Estado.PENDIENTE, envio);
+
+		Map<Categoria, Double> resultado = tienda.obtenerTotalVendidoPorCategoria();
+
 	    System.out.println(resultado);
 	    
 	    Double totalVendidoPorElectronica = resultado.get(Categoria.ELECTRONICA);
