@@ -12,7 +12,7 @@ public class Tienda {
 	private Set<Usuario> usuarios;
 	private Set<Producto> productos;
 	private List<Orden> ordenes;
-	
+
 	public Tienda() {
 		this.usuarios = new HashSet<>();
 		this.productos = new HashSet<>();
@@ -126,7 +126,7 @@ public class Tienda {
 
 		return mensaje;
 	}
-	
+
 	public List<Orden> obtenerOrdenesDeUsuario(Usuario usuario) {
 
 		List<Orden> resultado = new ArrayList<>();
@@ -140,8 +140,7 @@ public class Tienda {
 
 		return resultado;
 	}
-	
-	
+
 	public Boolean agregarProductoAlCarrito(Usuario usuario, Integer id, Integer cantidad)
 			throws ProductoNoEncontradoException, StockInsuficienteException {
 		Producto encontrado = this.buscarProductoPorId(id);
@@ -165,9 +164,7 @@ public class Tienda {
 		return false;
 
 	}
-	
-	
-	
+
 	public Orden generarOrden(String email, String codigo, Estado estado, Envio envio)
 			throws CarritoVacioException, UsuarioNoEncontradoException {
 
@@ -197,35 +194,38 @@ public class Tienda {
 		return orden;
 	}
 
-		public Map<Categoria, Double> obtenerTotalVendidoPorCategoria() {
-			Map<Categoria, Double> resultado = new HashMap<>();
+	public Map<Categoria, Double> obtenerTotalVendidoPorCategoria() {
+		Map<Categoria, Double> resultado = new HashMap<>();
 
-			for (Orden orden : ordenes) {
-				if (orden.getEstado().equals(Estado.CONFIRMADA)) {
-					List<LineasDeOrden> lineas = orden.getLineas();
+		for (Orden orden : ordenes) {
+			if (orden.getEstado().equals(Estado.CONFIRMADA)) {
+				List<LineasDeOrden> lineas = orden.getLineas();
 
-					for (LineasDeOrden lineasDeOrden : lineas) {
-						Categoria categoria = lineasDeOrden.getProducto().getCategoria();
+				for (LineasDeOrden lineasDeOrden : lineas) {
+					Categoria categoria = lineasDeOrden.getProducto().getCategoria();
 
-						if (resultado.containsKey(categoria)) {
-							Double suma = resultado.get(categoria);
+					if (resultado.containsKey(categoria)) {
+						Double suma = resultado.get(categoria);
 
-							suma += lineasDeOrden.obtenerSubtotal();
+						suma += lineasDeOrden.obtenerSubtotal();
 
-							resultado.put(categoria, suma);
-						} else {
-							resultado.put(categoria, lineasDeOrden.obtenerSubtotal());
-						}
+						resultado.put(categoria, suma);
+					} else {
+						resultado.put(categoria, lineasDeOrden.obtenerSubtotal());
 					}
 				}
 			}
-			return resultado;
 		}
 
-		public List<Orden> getOrdenes() {
-			return ordenes;
-		}
+		
 	
 
+		return resultado;
+	}
+
+	
+	public List<Orden> getOrdenes() {
+		return ordenes;
+	}
 		
 }

@@ -34,6 +34,8 @@ import dominio.Usuario;
 import dominio.UsuarioDuplicadoException;
 import dominio.UsuarioNoEncontradoException;
 import interfaz.EnvioEstandar;
+import interfaz.EnvioExpress;
+import interfaz.EnvioGratis;
 import dominio.Producto;
 
 public class EcommerceTest {
@@ -41,208 +43,203 @@ public class EcommerceTest {
 	public void dadoQueExisteUnaTiendaSePuedeAgregarUnProducto() {
 		Tienda tienda = new Tienda();
 		Inventario inventario = new Inventario("0317-0471", 10, 0);
-		Oferta oferta = null; 
-	
+		Oferta oferta = null;
+
 		Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
-		
+
 		Boolean seAgrego = tienda.agregarProducto(producto);
-		
+
 		assertTrue(seAgrego);
 	}
-	
+
 	@Test
 	public void dadoQueExisteUnaTiendaSePuedeEliminarUnProducto() {
 		Tienda tienda = new Tienda();
 		Inventario inventario = new Inventario("0317-0471", 10, 0);
-		Oferta oferta = null; 
-	
+		Oferta oferta = null;
+
 		Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
-		
+
 		tienda.agregarProducto(producto); // Agrego el producto para asi poder eliminarlo.
-		
+
 		Boolean seElimino = tienda.eliminarProducto(producto);
-		
+
 		assertTrue(seElimino);
 //		assertEquals(tienda.getProductos().size(), 0); // Funciona de las 2 maneras
 	}
-	
-	@Test (expected = ProductoNoEncontradoException.class)
-	public void dadoQueExisteUnaTiendaCuandoBuscoUnProductoPorIdQueNoExisteLanzaUnaExcepcion() throws ProductoNoEncontradoException {
+
+	@Test(expected = ProductoNoEncontradoException.class)
+	public void dadoQueExisteUnaTiendaCuandoBuscoUnProductoPorIdQueNoExisteLanzaUnaExcepcion()
+			throws ProductoNoEncontradoException {
 		Tienda tienda = new Tienda();
 		Inventario inventario = new Inventario("0317-0471", 10, 0);
-		Oferta oferta = null; 
-	
+		Oferta oferta = null;
+
 		Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
-		
+
 		tienda.agregarProducto(producto);
-		
+
 		tienda.buscarProductoPorId(1);
-		
+
 //		Producto prodBuscado = tienda.buscarProductoPorId(1);
 //		assertNull(prodBuscado);
 	}
-	
+
 	@Test
 	public void dadoQueExisteUnaTiendaSePuedeAgregarUnUsuarioCorrectamente() throws UsuarioDuplicadoException {
 		Tienda tienda = new Tienda();
-		Usuario user = new Usuario("marcosalba@gmail.com", "Marcos", "Albarracin",null);
-		
+		Usuario user = new Usuario("marcosalba@gmail.com", "Marcos", "Albarracin", null);
+
 		Boolean seAgrego = tienda.agregarUsuario(user);
-		
+
 		assertTrue(seAgrego);
 	}
-	
-	@Test (expected = UsuarioDuplicadoException.class)
-	public void dadoQueExisteUnaTiendaCuandoQuieroAgregarDosUsuariosConElMismoMailLanzaExcepcion() throws UsuarioDuplicadoException {
+
+	@Test(expected = UsuarioDuplicadoException.class)
+	public void dadoQueExisteUnaTiendaCuandoQuieroAgregarDosUsuariosConElMismoMailLanzaExcepcion()
+			throws UsuarioDuplicadoException {
 		Tienda tienda = new Tienda();
-		Usuario user = new Usuario("marcosalba@gmail.com", "Marcos", "Albarracin",null);
-		Usuario user2 = new Usuario("marcosalba@gmail.com", "Marcos", "Alba",null);
-		
+		Usuario user = new Usuario("marcosalba@gmail.com", "Marcos", "Albarracin", null);
+		Usuario user2 = new Usuario("marcosalba@gmail.com", "Marcos", "Alba", null);
+
 		tienda.agregarUsuario(user);
 		tienda.agregarUsuario(user2);
 	}
-	
-	
-	@Test 
-	public void dadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSeVerificaSiTieneStock() throws ProductoNoEncontradoException, UsuarioDuplicadoException, StockInsuficienteException {
+
+	@Test
+	public void dadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSeVerificaSiTieneStock()
+			throws ProductoNoEncontradoException, UsuarioDuplicadoException, StockInsuficienteException {
 		Tienda tienda = new Tienda();
-	    Inventario inventario = new Inventario("0317-0471", 10, 0);
-	    Oferta oferta = null;
- 
-	    Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
-	    tienda.agregarProducto(producto);
- 
-	    Carrito carrito = new Carrito();
-	    
-	    Usuario usuario = new Usuario("gianmice@gmail.com", "Gian", "Mice",carrito);
- 
-	    tienda.agregarUsuario(usuario);
-	    
-	    
-	    Boolean resultado = tienda.agregarProductoAlCarrito(usuario, 1, 3);
- 
-	    assertTrue(resultado);
+		Inventario inventario = new Inventario("0317-0471", 10, 0);
+		Oferta oferta = null;
+
+		Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
+		tienda.agregarProducto(producto);
+
+		Carrito carrito = new Carrito();
+
+		Usuario usuario = new Usuario("gianmice@gmail.com", "Gian", "Mice", carrito);
+
+		tienda.agregarUsuario(usuario);
+
+		Boolean resultado = tienda.agregarProductoAlCarrito(usuario, 1, 3);
+
+		assertTrue(resultado);
 	}
-	
-	
+
 	@Test(expected = StockInsuficienteException.class)
-	public void DadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSinStockSuficienteLanzaUnaExcepción() throws StockInsuficienteException, UsuarioDuplicadoException, ProductoNoEncontradoException {
-	    Tienda tienda = new Tienda();
-	    Inventario inventario = new Inventario("0317-0471", 2, 0);
-	    Oferta oferta = null;
- 
-	    Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
-	    tienda.agregarProducto(producto);
-	    
-	    Carrito carrito = new Carrito();
- 
-	    Usuario usuario = new Usuario("gianmice@gmail.com", "Gian", "Mice",carrito);
- 
-	    tienda.agregarUsuario(usuario);
-	    
-	    
-	    tienda.agregarProductoAlCarrito(usuario, producto.getId(), 10);
+	public void dadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSinStockSuficienteLanzaUnaExcepción()
+			throws StockInsuficienteException, UsuarioDuplicadoException, ProductoNoEncontradoException {
+		Tienda tienda = new Tienda();
+		Inventario inventario = new Inventario("0317-0471", 2, 0);
+		Oferta oferta = null;
+
+		Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, oferta);
+		tienda.agregarProducto(producto);
+
+		Carrito carrito = new Carrito();
+
+		Usuario usuario = new Usuario("gianmice@gmail.com", "Gian", "Mice", carrito);
+
+		tienda.agregarUsuario(usuario);
+
+		tienda.agregarProductoAlCarrito(usuario, producto.getId(), 10);
 	}
-	
-	
-	
+
 	@Test
 	public void dadoQueExisteUnaTiendaCuandoConsultoSusProductosObtengoUnaColeccionOrdenadaDeManeraAscendente() {
 		Tienda tienda = new Tienda();
-		
-		Inventario inventario = new Inventario("Mouse001",20,5);
-		
-		
-		Producto productoEstandar = new ProductoEstandar("Mouse",Categoria.ELECTRONICA,30000.0,inventario,null);
-		
-		
-		Inventario inventario2 = new Inventario("Silla002",100,10);
-		
-		Producto productoPersonalizado = new ProductoPersonalizado("Silla escritorio", Categoria.HOGAR,173000.0,inventario2,null);
-		
-		
-		Inventario inventario3 = new Inventario("Camiseta003",1000,50);
-	
-		Producto camiseta = new ProductoEstandar("Camiseta Seleccion Argentian",Categoria.DEPORTES,100000.0,inventario3,null);
-		
+
+		Inventario inventario = new Inventario("Mouse001", 20, 5);
+
+		Producto productoEstandar = new ProductoEstandar("Mouse", Categoria.ELECTRONICA, 30000.0, inventario, null);
+
+		Inventario inventario2 = new Inventario("Silla002", 100, 10);
+
+		Producto productoPersonalizado = new ProductoPersonalizado("Silla escritorio", Categoria.HOGAR, 173000.0,
+				inventario2, null);
+
+		Inventario inventario3 = new Inventario("Camiseta003", 1000, 50);
+
+		Producto camiseta = new ProductoEstandar("Camiseta Seleccion Argentian", Categoria.DEPORTES, 100000.0,
+				inventario3, null);
+
 		tienda.agregarProducto(productoEstandar);
 		tienda.agregarProducto(productoPersonalizado);
 		tienda.agregarProducto(camiseta);
-		
+
 		Set<Producto> resultado = tienda.obtenerProductosOrdenadosPorNombreDeManeraAscendente();
-		
+
 		List<Producto> lista = new ArrayList<>(resultado);
 
-		assertEquals(productoEstandar.getPrecioBase(),lista.get(0).getPrecioBase());
-		assertEquals(camiseta.getPrecioBase(),lista.get(1).getPrecioBase());
-		assertEquals(productoPersonalizado.getPrecioBase(),lista.get(2).getPrecioBase());
+		assertEquals(productoEstandar.getPrecioBase(), lista.get(0).getPrecioBase());
+		assertEquals(camiseta.getPrecioBase(), lista.get(1).getPrecioBase());
+		assertEquals(productoPersonalizado.getPrecioBase(), lista.get(2).getPrecioBase());
 	}
-	
-	
-	@Test 
+
+	@Test
 	public void dadoQueExisteUnaTiendaCuandoElPrecioDeLosProductosEstosSeOrdenanDeManeraDescendente() {
 		Tienda tienda = new Tienda();
-		
-		Inventario inventario = new Inventario("Gorra1001",30,5);
-		
-		Producto gorra = new ProductoEstandar("Gorra",Categoria.DEPORTES,43000.0,inventario,null);
-		
+
+		Inventario inventario = new Inventario("Gorra1001", 30, 5);
+
+		Producto gorra = new ProductoEstandar("Gorra", Categoria.DEPORTES, 43000.0, inventario, null);
+
 		tienda.agregarProducto(gorra);
-		
-		Inventario inventario2 = new Inventario("KingOfTheKongo003",1500,300);
-		
-		Producto buzoOverSize = new ProductoPersonalizado("Buzo king of the kongo",Categoria.DEPORTES,144990.0,inventario2,null);
-		
+
+		Inventario inventario2 = new Inventario("KingOfTheKongo003", 1500, 300);
+
+		Producto buzoOverSize = new ProductoPersonalizado("Buzo king of the kongo", Categoria.DEPORTES, 144990.0,
+				inventario2, null);
+
 		tienda.agregarProducto(buzoOverSize);
-		
-		Inventario inventario3 = new Inventario("MTA001",3000,1000);
-		
-		Producto bateriaCocina = new ProductoPersonalizado("Bateria cocina mta 5 piezas",Categoria.HOGAR,75225.0,inventario3,null);
-		
+
+		Inventario inventario3 = new Inventario("MTA001", 3000, 1000);
+
+		Producto bateriaCocina = new ProductoPersonalizado("Bateria cocina mta 5 piezas", Categoria.HOGAR, 75225.0,
+				inventario3, null);
+
 		tienda.agregarProducto(bateriaCocina);
-		
+
 		Set<Producto> resultado = tienda.obtenerProductosOrdenadosPorPrecioDeManeraDescendente();
-		
+
 		List<Producto> lista = new ArrayList<>(resultado);
-		
-		assertEquals(buzoOverSize.getPrecioBase(),lista.get(0).getPrecioBase());
-		assertEquals(bateriaCocina.getPrecioBase(),lista.get(1).getPrecioBase());
-		assertEquals(gorra.getPrecioBase(),lista.get(2).getPrecioBase());
+
+		assertEquals(buzoOverSize.getPrecioBase(), lista.get(0).getPrecioBase());
+		assertEquals(bateriaCocina.getPrecioBase(), lista.get(1).getPrecioBase());
+		assertEquals(gorra.getPrecioBase(), lista.get(2).getPrecioBase());
 	}
-	
-	
+
 	@Test
 	public void dadoQueExisteUnaTiendaCuandoConsultoElNombreDeLosProductosSeOrdenanDeFormaAscendente() {
 		Tienda tienda = new Tienda();
-		
-		Inventario inventario = new Inventario("M004",100,20);
-		
-		Producto microfono = new ProductoEstandar("Microfono",Categoria.ELECTRONICA,32999.0,inventario,null);
-		
+
+		Inventario inventario = new Inventario("M004", 100, 20);
+
+		Producto microfono = new ProductoEstandar("Microfono", Categoria.ELECTRONICA, 32999.0, inventario, null);
+
 		tienda.agregarProducto(microfono);
-		
-		Inventario inventario2 = new Inventario("CO104",3000,50);
-		
-		Producto colchon = new ProductoPersonalizado("Colchon",Categoria.HOGAR,209999.0,inventario2,null);
-		
+
+		Inventario inventario2 = new Inventario("CO104", 3000, 50);
+
+		Producto colchon = new ProductoPersonalizado("Colchon", Categoria.HOGAR, 209999.0, inventario2, null);
+
 		tienda.agregarProducto(colchon);
-		
-		Inventario inventario3 = new Inventario("L01",10,5);
-		
-		Producto libro = new ProductoEstandar("Padre rico y padre pobre",Categoria.LIBROS,70000.0,inventario3,null);
-		
+
+		Inventario inventario3 = new Inventario("L01", 10, 5);
+
+		Producto libro = new ProductoEstandar("Padre rico y padre pobre", Categoria.LIBROS, 70000.0, inventario3, null);
+
 		tienda.agregarProducto(libro);
-		
+
 		Set<Producto> resultado = tienda.obtenerProductosOrdenadosPorNombreDeFormaAscendente();
-		
-		
+
 		List<Producto> lista = new ArrayList<>(resultado);
-		
-		assertEquals(lista.get(0).getNombre(),colchon.getNombre());
-		assertEquals(lista.get(1).getNombre(),microfono.getNombre());
-		assertEquals(lista.get(2).getNombre(),libro.getNombre());
+
+		assertEquals(lista.get(0).getNombre(), colchon.getNombre());
+		assertEquals(lista.get(1).getNombre(), microfono.getNombre());
+		assertEquals(lista.get(2).getNombre(), libro.getNombre());
 	}
-	
 	
 	@Test
 	public void dadoQueExisteUnaTiendaCuandoElUsuarioAgregaProductosASuCarritoYTomaLasLineasDeProductoSeGeneraUnaNuevOrdenYLasLineasDeCarritoFormanParteDeLaLineaDeOrdenSeGuardaLaOrdenEnLaTiendaYElCarritoSeLimpiaYElInventarioSeTerminaDeActualizar() throws UsuarioDuplicadoException, CarritoVacioException, UsuarioNoEncontradoException {
@@ -292,36 +289,40 @@ public class EcommerceTest {
 		assertEquals(97,inventario.getUnidades(),0.01);
 	}
 	
-	//Tests nuevos para probar el precioFinal con oferta
+	 
+
+	// Tests nuevos para probar el precioFinal con oferta
+
 	@Test
 	public void dadoQueExisteUnProductoPersonalizadoConUnaOfertaDelVeintePorCientoSeDebePoderObtenerSuPrecioFinal() {
 		Tienda tienda = new Tienda();
-		
-		Inventario inventario = new Inventario("Cinta001",1000,100);
-		
+
+		Inventario inventario = new Inventario("Cinta001", 1000, 100);
+
 		Oferta oferta = new OfertaConPorcentaje(20.0);
-		
-		Producto cintaDeCorrer = new ProductoPersonalizado("Cinta de correr electrica",Categoria.DEPORTES,615553.0,inventario,oferta);
-		
+
+		Producto cintaDeCorrer = new ProductoPersonalizado("Cinta de correr electrica", Categoria.DEPORTES, 615553.0,
+				inventario, oferta);
+
 		tienda.agregarProducto(cintaDeCorrer);
-		
-		Opcion motorPremium = new Opcion("motor premium",50000.0);
-		
-		Opcion pantallaTactil = new Opcion("pantalla tactil",30000.0);
-		
+
+		Opcion motorPremium = new Opcion("motor premium", 50000.0);
+
+		Opcion pantallaTactil = new Opcion("pantalla tactil", 30000.0);
+
 		ProductoPersonalizado productoPersonalizadoCinta = (ProductoPersonalizado) cintaDeCorrer;
-	
+
 		productoPersonalizadoCinta.agregarOpcion(motorPremium);
 		productoPersonalizadoCinta.agregarOpcion(pantallaTactil);
-		
+
 		Double precioTotal = tienda.obtenerPrecioFinal();
-		
-		assertEquals(556442.4,precioTotal,0.01);
+
+		assertEquals(556442.4, precioTotal, 0.01);
 	}
-	
-	
+
 	@Test
-	public void dadoQueExisteUnaTiendaCuandoConsultoLosProductosObtengoElTotalVendidoPorCadaCategoria() throws UsuarioDuplicadoException, CarritoVacioException, UsuarioNoEncontradoException {
+	public void dadoQueExisteUnaTiendaCuandoConsultoLosProductosObtengoElTotalVendidoPorCadaCategoria()
+			throws UsuarioDuplicadoException, CarritoVacioException, UsuarioNoEncontradoException {
 		Tienda tienda = new Tienda();
 
 		Usuario usuario = new Usuario("juan@gmail.com", "Juan", "Perez", new Carrito());
@@ -430,6 +431,7 @@ public class EcommerceTest {
 
 		Map<Categoria, Double> resultado = tienda.obtenerTotalVendidoPorCategoria();
 
+
 	    
 	    Double totalVendidoPorElectronica = resultado.get(Categoria.ELECTRONICA);
 	    
@@ -440,8 +442,51 @@ public class EcommerceTest {
 	    assertEquals(totalVendidoPorElectronica,(Double) 1.3029684E7);
 	    assertEquals(totalVendidoPorDeportes,(Double)1.9509875E7);
 	    assertEquals(totalVendidoPorHogar, (Double) 4.5187348E7);
+
 	}
-	
-	
-	
+
+	@Test // 19
+	public void dadoQueExisteUnaOrdenConEnvioExpressElCostoTotalDeLaOrdenIncluyeElCostoDelEnvio() {
+		Carrito carrito = new Carrito();
+
+		Usuario usuario = new Usuario("marquitosalba2018@gmail.com", "Marcos", "Alba", carrito);
+		Envio envio = new EnvioExpress();
+
+		Orden orden = new Orden(usuario, "Orden 01", Estado.PENDIENTE, envio);
+		Inventario inventario = new Inventario("0317-0471", 10, 0);
+		Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, null);
+
+		LineasDeOrden linea = new LineasDeOrden(producto, 1);
+
+		orden.agregarLineaDeOrden(linea);
+
+		// Raqueta vale 550, Envio 5000 = 5550;
+		Double totalEsperado = 5550.0;
+		Double totalObtenido = orden.calcularTotal();
+
+		assertEquals(totalEsperado, totalObtenido);
+	}
+
+	@Test // 20
+	public void dadoQueExisteUnaOrdenConEnvioGratuitoElCostoDeEnvioEsCeroYNoAfectaElTotalDeLaOrden() {
+		Carrito carrito = new Carrito();
+
+		Usuario usuario = new Usuario("marquitosalba2018@gmail.com", "Marcos", "Alba", carrito);
+		Envio envio = new EnvioGratis();
+
+		Orden orden = new Orden(usuario, "Orden 01", Estado.PENDIENTE, envio);
+		Inventario inventario = new Inventario("0317-0471", 10, 0);
+		Producto producto = new ProductoEstandar("Raqueta de Tenis", Categoria.DEPORTES, 550.00, inventario, null);
+
+		LineasDeOrden linea = new LineasDeOrden(producto, 1);
+
+		orden.agregarLineaDeOrden(linea);
+		
+		// Raqueta = 550, Envio = 0, Total = 550;
+		Double totalEsperado = 550.0;
+		Double totalObtenido = orden.calcularTotal();
+		
+		assertEquals(totalEsperado, totalObtenido);
+	}
+
 }
