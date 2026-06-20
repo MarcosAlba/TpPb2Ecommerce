@@ -129,6 +129,22 @@ public class Tienda {
 		return mensaje;
 	}
 
+	
+	public List<Orden> obtenerOrdenesDeUsuario(Usuario usuario) {
+
+	    List<Orden> resultado = new ArrayList<>();
+
+	    for (Orden orden : this.ordenes) {
+
+	        if (orden.getUsuario().equals(usuario)) {
+	            resultado.add(orden);
+	        }
+	    }
+
+	    return resultado;
+	}
+	
+	
 	public Boolean agregarProductoAlCarrito(Usuario usuario, Integer id, Integer cantidad) throws ProductoNoEncontradoException, StockInsuficienteException {
 		Producto encontrado = this.buscarProductoPorId(id);
 		

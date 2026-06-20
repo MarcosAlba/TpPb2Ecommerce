@@ -1,5 +1,6 @@
 package interfaz;
 
+import java.util.List;
 import java.util.Scanner;
 
 import dominio.Carrito;
@@ -145,7 +146,8 @@ public class TiendaEcommerceAplicacion {
             switch (opcion) {
 
                 case 1:
-                    tienda.mostrarCatalogo();
+                    String catalogo = tienda.mostrarCatalogo();
+                    System.out.println(catalogo);
                     break;
 
                 case 2:
@@ -165,7 +167,15 @@ public class TiendaEcommerceAplicacion {
                     break;
 
                 case 6:
-                    mostrarOrdenes(usuario);
+                   List<Orden> ordenes =  tienda.obtenerOrdenesDeUsuario(usuario);
+                   if (ordenes.isEmpty()) {
+                       System.out.println("No posee órdenes registradas");
+                   } else {
+
+                       for (Orden orden : ordenes) {
+                           System.out.println(orden.obtenerDetalle());
+                       }
+                   }
                     break;
 
                 case 7:
@@ -189,6 +199,8 @@ public class TiendaEcommerceAplicacion {
 
     private static void agregarAlCarrito(Usuario usuario) {
 
+    	System.out.println(tienda.mostrarCatalogo());
+    	
         System.out.println("ID producto:");
         int id = teclado.nextInt();
 
@@ -276,19 +288,37 @@ public class TiendaEcommerceAplicacion {
     
     private static void cargarDatosIniciales() throws ProductoDuplicadoException, UsuarioDuplicadoException {
 
-        Inventario inv = new Inventario("M1", 10, 0);
+    	Inventario inv1 = new Inventario("M1", 10, 0);
+        Inventario inv2 = new Inventario("T1", 15, 0);
+        Inventario inv3 = new Inventario("A1", 8, 0);
 
         Producto mouse = new ProductoEstandar(
-            "Mouse Gamer",
-            Categoria.ELECTRONICA,
-            5000.0,
-            inv,
-            null
-        );
+                "Mouse Gamer",
+                Categoria.ELECTRONICA,
+                5000.0,
+                inv1,
+                null);
+
+        Producto teclado = new ProductoEstandar(
+                "Teclado Mecánico",
+                Categoria.ELECTRONICA,
+                12000.0,
+                inv2,
+                null);
+
+        Producto auriculares = new ProductoEstandar(
+                "Auriculares",
+                Categoria.ELECTRONICA,
+                8000.0,
+                inv3,
+                null);
 
         tienda.agregarProducto(mouse);
+        tienda.agregarProducto(teclado);
+        tienda.agregarProducto(auriculares);
 
-        tienda.agregarUsuario(new Usuario("admin@gmail.com", "Admin", "System",null));
+        tienda.agregarUsuario(
+                new Usuario("admin@gmail.com", "Admin", "System", null));
     }
 
     
