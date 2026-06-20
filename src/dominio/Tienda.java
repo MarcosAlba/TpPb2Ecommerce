@@ -221,6 +221,11 @@ public class Tienda {
 			}
 			return resultado;
 		}
+
+		public List<Orden> getOrdenes() {
+			return ordenes;
+		}
 	
 
+		
 }

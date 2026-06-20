@@ -69,6 +69,15 @@ public class Orden {
 	}
 	
 	
+	
+	public Envio getEnvio() {
+		return envio;
+	}
+
+	public void setEnvio(Envio envio) {
+		this.envio = envio;
+	}
+
 	public Double calcularTotal() {
 
 	    return obtenerSubtotalProductos()

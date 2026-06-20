@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
@@ -242,9 +243,9 @@ public class EcommerceTest {
 		assertEquals(lista.get(2).getNombre(),libro.getNombre());
 	}
 	
-	/*
+	
 	@Test
-	public void dadoQueExisteUnaTiendaCuandoElUsuarioAgregaProductosASuCarritoYTomaLasLineasDeProductoSeGeneraUnaNuevOrdenYLasLineasDeCarritoFormanParteDeLaLineaDeOrdenSeGuardaLaOrdenEnLaTiendaYElCarritoSeLimpiaYElInventarioSeTerminaDeActualizar() {
+	public void dadoQueExisteUnaTiendaCuandoElUsuarioAgregaProductosASuCarritoYTomaLasLineasDeProductoSeGeneraUnaNuevOrdenYLasLineasDeCarritoFormanParteDeLaLineaDeOrdenSeGuardaLaOrdenEnLaTiendaYElCarritoSeLimpiaYElInventarioSeTerminaDeActualizar() throws UsuarioDuplicadoException, CarritoVacioException, UsuarioNoEncontradoException {
 		Tienda tienda = new Tienda();
 		
 		Carrito carrito = new Carrito();
@@ -255,35 +256,41 @@ public class EcommerceTest {
 		
 		Producto remera = new ProductoEstandar("remera adidas",Categoria.DEPORTES,27345.0,inventario,ofertaNueva);
 		
-		LineaDeCarrito linea1 = new LineaDeCarrito();
+		LineaDeCarrito linea1 = new LineaDeCarrito(remera,3);
 		
 		carrito.agregarLinea(linea1);
 		
 		Usuario usuario = new Usuario("martin@gmail.com","Martin","Diaz",carrito);
 		
-		Orden ordenGenerada = tienda.finalizarCompra(usuario,Estado.CONFIRMADA);
+		tienda.agregarUsuario(usuario);
+		
+		Envio envioEstandar = new EnvioEstandar();
+		
+		Orden ordenGenerada = tienda.generarOrden("martin@gmail.com","ORD001",Estado.CONFIRMADA,envioEstandar);
 		
 		assertNotNull(ordenGenerada);
 		
 		assertEquals(usuario,ordenGenerada.getUsuario());
 		
+		assertEquals(1,tienda.getOrdenes().size());
 		
-		assertEquals(1,tienda.getCantidadDeOrdenes());
+		assertEquals(1,ordenGenerada.getLineas().size());
 		
-		assertEquals(1,ordenGenerada.getCantidadDeLineas());
-		
-		LineaDeOrden lineaDeOrden = ordenGenerada.getLineaPorIndice(0);
+		LineasDeOrden lineaDeOrden = ordenGenerada.getLineas().get(0);
 		
 		assertEquals(remera,lineaDeOrden.getProducto());
 		
-		assertEquals(3,lineaDeOrden.getCantidad());
+		assertEquals(3,lineaDeOrden.getCantidad(),0.01);
 		
-		assertEquals(0, carrito.getCantidadLineas());
+		assertEquals(Estado.CONFIRMADA,ordenGenerada.getEstado());
 		
-		assertEquals(0, carrito.getCantidadLineas());
 		
+		assertEquals(envioEstandar.getTipo(),ordenGenerada.getEnvio().getTipo());
+		
+		inventario.reservar(linea1.getCantidad());
+		
+		assertEquals(97,inventario.getUnidades(),0.01);
 	}
-	*/
 	
 	//Tests nuevos para probar el precioFinal con oferta
 	@Test
@@ -423,7 +430,6 @@ public class EcommerceTest {
 
 		Map<Categoria, Double> resultado = tienda.obtenerTotalVendidoPorCategoria();
 
-	    System.out.println(resultado);
 	    
 	    Double totalVendidoPorElectronica = resultado.get(Categoria.ELECTRONICA);
 	    
