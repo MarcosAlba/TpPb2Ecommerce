@@ -16,5 +16,7 @@ public class LineasDeOrden {
 		return cantidad;
 	}
 	
-	
+	public Double obtenerSubtotal() {
+		return producto.calcularPrecioFinal() * cantidad;
+	}
 }

@@ -3,9 +3,12 @@ package interfaz;
 import java.util.Scanner;
 
 import dominio.Carrito;
+import dominio.CarritoVacioException;
 import dominio.Categoria;
+import dominio.Envio;
 import dominio.Estado;
 import dominio.Inventario;
+import dominio.Orden;
 import dominio.Producto;
 import dominio.ProductoDuplicadoException;
 import dominio.ProductoEstandar;
@@ -42,10 +45,11 @@ public class TiendaEcommerceAplicacion {
                         menuUsuario(usuario); 
                     }
                     break;
-
+/*
                 case 3:
                 	menuReportes();
                     break;
+                    */
 
                 default:
                     System.out.println("Opción inválida.");
@@ -117,7 +121,7 @@ public class TiendaEcommerceAplicacion {
     
     
     
-    private static void menuUsuario(Usuario usuario) {
+    private static void menuUsuario(Usuario usuario) throws UsuarioNoEncontradoException {
 
         int opcion;
 
@@ -222,7 +226,7 @@ public class TiendaEcommerceAplicacion {
     
     
     
-    private static void finalizarCompra(Usuario usuario) {
+    private static void finalizarCompra(Usuario usuario) throws UsuarioNoEncontradoException {
 
         try {
             System.out.println("Seleccione envío:");
@@ -255,10 +259,11 @@ public class TiendaEcommerceAplicacion {
 
             System.out.println("Ingrese el estado de la orden: ");
             
-            boolean seGenero = tienda.generarOrden(usuario.getEmail(), codigo, Estado.CONFIRMADA);
+            Orden orden = tienda.generarOrden(usuario.getEmail(), codigo, Estado.CONFIRMADA,envio);
 
-            if(seGenero) {
+            if(orden != null) {
                 System.out.println("Compra realizada con éxito");
+                System.out.println(orden.obtenerDetalle());
             }
             
 
@@ -287,7 +292,7 @@ public class TiendaEcommerceAplicacion {
     }
 
     
-    
+/*    
     private static void menuReportes() {
     	int opcion;
     	
@@ -345,5 +350,5 @@ public class TiendaEcommerceAplicacion {
             System.out.println("No existen ventas todavía");
         }
     }
-    
+*/    
 }

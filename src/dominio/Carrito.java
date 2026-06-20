@@ -26,4 +26,28 @@ public class Carrito {
 	public void vaciar() {
 	    this.lineas.clear();
 	}
+	
+	
+	public String obtenerDetalle() {
+
+	    if (this.lineas.isEmpty()) {
+	        return "===== CARRITO =====\n\nEl carrito está vacío.";
+	    }
+
+	    String detalle = "===== CARRITO =====\n\n";
+
+	    Double total = 0.0;
+
+	    for (LineaDeCarrito linea : this.lineas) {
+
+	        detalle += linea.toString() + "\n";
+
+	        total += linea.obtenerSubTotal();
+	    }
+
+	    detalle += "\n-------------------";
+	    detalle += "\nTOTAL: $" + total;
+
+	    return detalle;
+	}
 }

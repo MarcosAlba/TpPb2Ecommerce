@@ -34,6 +34,15 @@ public class LineaDeCarrito {
 		return this.producto.getPrecioBase() * this.cantidad;
 	}
 
+
+	@Override
+	public String toString() {
+		 return producto.getNombre()
+	            + " x" + cantidad
+	            + " - $" + this.obtenerSubTotal();
+	}
+
+	
 	
 	
 	

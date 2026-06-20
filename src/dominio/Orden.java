@@ -47,20 +47,43 @@ public class Orden {
 	}
 	
 	
+	public Double obtenerSubtotalProductos() {
+
+	    Double subtotal = 0.0;
+
+	    for (LineasDeOrden linea : this.lineas) {
+	        subtotal += linea.obtenerSubtotal();
+	    }
+
+	    return subtotal;
+	}
+	
+	
+	public Double calcularTotal() {
+
+	    return obtenerSubtotalProductos()
+	            + this.envio.calcularCosto();
+	}
+	
 	public String obtenerDetalle() {
 
 	    String detalle = "";
 
-	    detalle += "Código: " + this.codigo + "\n";
+	    detalle += "===== ORDEN =====\n";
+	    detalle += "Codigo: " + this.codigo + "\n";
 	    detalle += "Cliente: " + this.usuario.getNombre() + "\n";
 	    detalle += "Estado: " + this.estado + "\n";
-	    detalle += "Envío: " + this.envio + "\n";
+	    detalle += "Envio: " + this.envio.getTipo() + "\n\n";
 
-	    detalle += "\nProductos:\n";
+	    detalle += "Productos:\n";
 
 	    for (LineasDeOrden linea : this.lineas) {
 	        detalle += linea + "\n";
 	    }
+
+	    detalle += "\nSubtotal: $" + obtenerSubtotalProductos();
+	    detalle += "\nCosto envio: $" + this.envio.calcularCosto();
+	    detalle += "\nTOTAL: $" + calcularTotal();
 
 	    return detalle;
 	}
