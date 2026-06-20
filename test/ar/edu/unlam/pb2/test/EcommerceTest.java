@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -12,11 +13,17 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import dominio.Carrito;
+import dominio.CarritoVacioException;
 import dominio.Categoria;
+import dominio.Envio;
+import dominio.Estado;
 import dominio.Inventario;
+import dominio.LineaDeCarrito;
+import dominio.LineasDeOrden;
 import dominio.Oferta;
 import dominio.OfertaConPorcentaje;
 import dominio.Opcion;
+import dominio.Orden;
 import dominio.ProductoEstandar;
 import dominio.ProductoNoEncontradoException;
 import dominio.ProductoPersonalizado;
@@ -24,6 +31,8 @@ import dominio.StockInsuficienteException;
 import dominio.Tienda;
 import dominio.Usuario;
 import dominio.UsuarioDuplicadoException;
+import dominio.UsuarioNoEncontradoException;
+import interfaz.EnvioEstandar;
 import dominio.Producto;
 
 public class EcommerceTest {
@@ -135,7 +144,7 @@ public class EcommerceTest {
 	}
 	
 	
-	/*
+	
 	@Test
 	public void dadoQueExisteUnaTiendaCuandoConsultoSusProductosObtengoUnaColeccionOrdenadaDeManeraAscendente() {
 		Tienda tienda = new Tienda();
@@ -233,7 +242,7 @@ public class EcommerceTest {
 		assertEquals(lista.get(2).getNombre(),libro.getNombre());
 	}
 	
-	
+	/*
 	@Test
 	public void dadoQueExisteUnaTiendaCuandoElUsuarioAgregaProductosASuCarritoYTomaLasLineasDeProductoSeGeneraUnaNuevOrdenYLasLineasDeCarritoFormanParteDeLaLineaDeOrdenSeGuardaLaOrdenEnLaTiendaYElCarritoSeLimpiaYElInventarioSeTerminaDeActualizar() {
 		Tienda tienda = new Tienda();
@@ -274,7 +283,7 @@ public class EcommerceTest {
 		assertEquals(0, carrito.getCantidadLineas());
 		
 	}
-	
+	*/
 	
 	//Tests nuevos para probar el precioFinal con oferta
 	@Test
@@ -305,108 +314,233 @@ public class EcommerceTest {
 	
 	
 	@Test
-	public void dadoQueExisteUnaTiendaCuandoConsultoLosProductosObtengoElTotalVendidoPorCadaCategoria() {
+	public void dadoQueExisteUnaTiendaCuandoConsultoLosProductosObtengoElTotalVendidoPorCadaCategoria() throws UsuarioDuplicadoException, CarritoVacioException, UsuarioNoEncontradoException {
 		Tienda tienda = new Tienda();
 	
-		Usuario usuario = new Usuario("juan@gmail.com","Juan","perez",null);
-		
-		tienda.agregarUsuario(usuario);
-		
-		Usuario usuario2 = new Usuario("damian@gmail.com","Damian","Ramirez",null);
-		
-		tienda.agregarUsuario(usuario2);
-		
-		
-		Usuario usuario3 = new Usuario("ana@gmail.com","Ana","Lopez",null);
-		
-		Inventario inventario = new Inventario("P1",100,10);
-		
-		Oferta nueva = new OfertaConPorcentaje(20.0);
-		
-		Producto pantalon = new ProductoEstandar("Pantalon deportivo",Categoria.DEPORTES,69900.0,inventario,nueva);
-		
-		Inventario inventario2 = new Inventario("Z11",30000,2000);
-		
-		Oferta nueva2 = new OfertaConPorcentaje(10.0);
-		
-		Producto zapatillas = new ProductoPersonalizado("Zapatillas running",Categoria.DEPORTES,51300.0,inventario,nueva2);
-		
-		Inventario inventario3 = new Inventario("G1001",5000,200);
-		
-		Oferta nueva3 = new OfertaConPorcentaje(15.0);
-		
-		Producto guantes = new ProductoEstandar("Guantes de arquero",Categoria.DEPORTES,29779.0,inventario3,nueva3);
-		
-		Inventario inventario4 = new Inventario("D002",1000,20);
-		
-		Oferta nueva4 = new OfertaConPorcentaje(46.0);
-		
-		Producto dispenser = new ProductoPersonalizado("Dispenser de agua",Categoria.HOGAR,181720.0, inventario4,nueva4);
+		Usuario usuario = new Usuario(
+	            "juan@gmail.com",
+	            "Juan",
+	            "Perez",
+	            new Carrito());
 
-		Inventario inventario5 = new Inventario("TE001",3000,2000);
-		
-		Producto tender = new ProductoPersonalizado("Tender vertical para ropa",Categoria.HOGAR,75248.0,inventario5,null);
-		
-		Inventario inventario6 = new Inventario("MA00",2000,500);
-		
-		Producto mate = new ProductoEstandar("Mate justo imperial",Categoria.HOGAR,11000.0,inventario6, null);
-		
-		Inventario inventario7 = new Inventario("CV002",1000,100);
-		
-		Oferta nueva6 = new OfertaConPorcentaje(48.0);
-		
-		Producto colchon = new ProductoEstandar("Colchon viggo",Categoria.HOGAR,626289.0,inventario7,nueva6);
-		
-		Inventario inventario8 = new Inventario("COO3",3000,200);
-		
-		Oferta nueva7 = new OfertaConPorcentaje(54.0);
-		
-		Producto cooler = new ProductoPersonalizado("kit 3 coolers",Categoria.ELECTRONICA,27298.0,inventario8,nueva7);
-		
-		Inventario inventario9 = new Inventario("VT1000",3000,2000);
-		
-		Oferta nueva8 = new OfertaConPorcentaje(52.0);
-		
-		Producto ventilador = new ProductoEstandar("Ventilador de techo",Categoria.ELECTRONICA,96485.0,inventario9,nueva8);
-		
-		LineaDeCarrito linea1 = new LineaDeOrden(pantalon,40,pantalon.calcularPrecioFinal());
-		LineaDeCarrito linea2 = new LineaDeOrden(zapatillas,100,zapatillas.calcularPrecioFinal());
-		LineaDeCarrito linea3 = new LineaDeOrden(guantes,500,guantes.calcularPrecioFinal());
-		LineaDeCarrito linea4 = new LineaDeOrden(dispenser,100,dispenser.calcularPrecioFinal());
-		LineaDeCarrito linea5 = new LineaDeOrden(tender,30,tender.calcularPrecioFinal());
-		LineaDeCarrito linea6 = new LineaDeOrden(mate,50,mate.calcularPrecioFinal());
-		LineaDeCarrito linea7 = new LineaDeOrden(colchon,100,colchon.calcularPrecioFinal());
-		LineaDeCarrito linea8 = new LineaDeOrden(cooler,300,cooler.calcularPrecioFinal());
-		LineaDeCarrito linea9 = new LineaDeOrden(ventilador,200,ventilador.calcularPrecioFinal());
-		
-		
-		Orden orden1 = new Orden(usuario,Estado.CONFIRMADA);
-		
-		orden1.agregarLineaDeOrden(linea1);
-		orden1.agregarLineaDeOrden(linea2);
-		orden1.agregarLineaDeOrden(linea3);
-		
-		Orden orden2 = new Orden(usuario2,Estado.CONFIRMADA);
-		
-		orden2.agregarLineaDeOrden(linea4);
-		orden2.agregarLinea(linea5);
-		orden2.agregarLinea(linea6);
-		
-		orden3.agregarLinea(linea7);
-		orden3.agregarLinea(linea8);
-		orden3.agregarLinea(linea9);
-		
-		Orden orden3 = new Orden(usuario3,Estado.CONFIRMADA);
+	    Usuario usuario2 = new Usuario(
+	            "damian@gmail.com",
+	            "Damian",
+	            "Ramirez",
+	            new Carrito());
 
-		
-		tienda.agregarOrden(orden1);
-		tienda.agregarOrden(orden2);
-		tienda.agregarOrden(orden3);
-		
+	    Usuario usuario3 = new Usuario(
+	            "ana@gmail.com",
+	            "Ana",
+	            "Lopez",
+	            new Carrito());
+
+	    tienda.agregarUsuario(usuario);
+	    tienda.agregarUsuario(usuario2);
+	    tienda.agregarUsuario(usuario3);
+	    
+	    
+	    
+	    Inventario inventarioPantalon =
+	            new Inventario("D1", 100, 10);
+
+	    Oferta ofertaPantalon =
+	            new OfertaConPorcentaje(20.0);
+
+	    Producto pantalon =
+	            new ProductoEstandar(
+	                    "Pantalon deportivo",
+	                    Categoria.DEPORTES,
+	                    69900.0,
+	                    inventarioPantalon,
+	                    ofertaPantalon);
+
+	    Inventario inventarioZapatillas =
+	            new Inventario("D2", 30000, 2000);
+
+	    Oferta ofertaZapatillas =
+	            new OfertaConPorcentaje(10.0);
+
+	    Producto zapatillas =
+	            new ProductoPersonalizado(
+	                    "Zapatillas running",
+	                    Categoria.DEPORTES,
+	                    51300.0,
+	                    inventarioZapatillas,
+	                    ofertaZapatillas);
+
+	    Inventario inventarioGuantes =
+	            new Inventario("D3", 5000, 200);
+
+	    Oferta ofertaGuantes =
+	            new OfertaConPorcentaje(15.0);
+
+	    Producto guantes =
+	            new ProductoEstandar(
+	                    "Guantes de arquero",
+	                    Categoria.DEPORTES,
+	                    29779.0,
+	                    inventarioGuantes,
+	                    ofertaGuantes);
+	    
+	    
+	    Inventario inventarioDispenser =
+	            new Inventario("H1", 1000, 20);
+
+	    Oferta ofertaDispenser =
+	            new OfertaConPorcentaje(46.0);
+
+	    Producto dispenser =
+	            new ProductoPersonalizado(
+	                    "Dispenser de agua",
+	                    Categoria.HOGAR,
+	                    181720.0,
+	                    inventarioDispenser,
+	                    ofertaDispenser);
+
+	    Inventario inventarioTender =
+	            new Inventario("H2", 3000, 2000);
+
+	    Producto tender =
+	            new ProductoPersonalizado(
+	                    "Tender vertical para ropa",
+	                    Categoria.HOGAR,
+	                    75248.0,
+	                    inventarioTender,
+	                    null);
+
+	    Inventario inventarioMate =
+	            new Inventario("H3", 2000, 500);
+
+	    Producto mate =
+	            new ProductoEstandar(
+	                    "Mate justo imperial",
+	                    Categoria.HOGAR,
+	                    11000.0,
+	                    inventarioMate,
+	                    null);
+
+	    Inventario inventario7 = new Inventario("CV002", 1000, 100);
+	    Oferta oferta5 = new OfertaConPorcentaje(48.0);
+	    
+	    
+	    Producto colchon = new ProductoEstandar(
+	            "Colchon viggo",
+	            Categoria.HOGAR,
+	            626289.0,
+	            inventario7,
+	            oferta5);
+	    
+	    
+	    Inventario inventarioCooler =
+	            new Inventario("E1", 3000, 200);
+
+	    Oferta ofertaCooler =
+	            new OfertaConPorcentaje(54.0);
+
+	    Producto cooler =
+	            new ProductoPersonalizado(
+	                    "Kit 3 coolers",
+	                    Categoria.ELECTRONICA,
+	                    27298.0,
+	                    inventarioCooler,
+	                    ofertaCooler);
+
+	    Inventario inventarioVentilador =
+	            new Inventario("E2", 3000, 2000);
+
+	    Oferta ofertaVentilador =
+	            new OfertaConPorcentaje(52.0);
+
+	    Producto ventilador =
+	            new ProductoEstandar(
+	                    "Ventilador de techo",
+	                    Categoria.ELECTRONICA,
+	                    96485.0,
+	                    inventarioVentilador,
+	                    ofertaVentilador);
+	    
+	    
+	    tienda.agregarProducto(pantalon);
+	    tienda.agregarProducto(zapatillas);
+	    tienda.agregarProducto(guantes);
+
+	    tienda.agregarProducto(dispenser);
+	    tienda.agregarProducto(tender);
+	    tienda.agregarProducto(mate);
+	    tienda.agregarProducto(colchon);
+	    
+	    tienda.agregarProducto(cooler);
+	    tienda.agregarProducto(ventilador);
+	    
+	    
+	    usuario.getCarrito().agregarLinea(
+	            new LineaDeCarrito(pantalon, 40));
+
+	    usuario.getCarrito().agregarLinea(
+	            new LineaDeCarrito(zapatillas, 100));
+
+	    usuario.getCarrito().agregarLinea(
+	            new LineaDeCarrito(guantes, 500));
+	    
+	    
+	    usuario2.getCarrito().agregarLinea(
+	            new LineaDeCarrito(dispenser, 100));
+
+	    usuario2.getCarrito().agregarLinea(
+	            new LineaDeCarrito(tender, 30));
+
+	    usuario2.getCarrito().agregarLinea(
+	            new LineaDeCarrito(mate, 50));
+	    
+	    
+	    usuario3.getCarrito().agregarLinea(
+	            new LineaDeCarrito(colchon, 100));
+
+	    usuario3.getCarrito().agregarLinea(
+	            new LineaDeCarrito(cooler, 300));
+
+	    usuario3.getCarrito().agregarLinea(
+	            new LineaDeCarrito(ventilador, 200));
+	    
+	    Envio envio = new EnvioEstandar();
+	    
+	    tienda.generarOrden(
+	            usuario.getEmail(),
+	            "ORD001",
+	            Estado.PENDIENTE,
+	            envio);
+
+	    tienda.generarOrden(
+	            usuario2.getEmail(),
+	            "ORD002",
+	            Estado.PENDIENTE,
+	            envio);
+
+	    tienda.generarOrden(
+	            usuario3.getEmail(),
+	            "ORD003",
+	            Estado.PENDIENTE,
+	            envio);
+	    
+	    
+	    
+	    Map<Categoria, Double> resultado =
+	            tienda.obtenerTotalVendidoPorCategoria();
+	    
+	    System.out.println(resultado);
+	    
+	    Double totalVendidoPorElectronica = resultado.get(Categoria.ELECTRONICA);
+	    
+	    Double totalVendidoPorDeportes = resultado.get(Categoria.DEPORTES);
+	    
+	    Double totalVendidoPorHogar = resultado.get(Categoria.HOGAR);
+	    
+	    assertEquals(totalVendidoPorElectronica,(Double) 1.3029684E7);
+	    assertEquals(totalVendidoPorDeportes,(Double)1.9509875E7);
+	    assertEquals(totalVendidoPorHogar, (Double) 4.5187348E7);
 	}
-	*/
 	
 	
-	@Test
-	public void dadoQueExisteUnaTiendaCuando
+	
 }

@@ -167,15 +167,7 @@ public class TiendaEcommerceAplicacion {
                     break;
 
                 case 6:
-                   List<Orden> ordenes =  tienda.obtenerOrdenesDeUsuario(usuario);
-                   if (ordenes.isEmpty()) {
-                       System.out.println("No posee órdenes registradas");
-                   } else {
-
-                       for (Orden orden : ordenes) {
-                           System.out.println(orden.obtenerDetalle());
-                       }
-                   }
+                   mostrarOrdenes(usuario);
                     break;
 
                 case 7:
@@ -192,7 +184,15 @@ public class TiendaEcommerceAplicacion {
     
     
     private static void mostrarOrdenes(Usuario usuario) {
+		List<Orden> ordenes = tienda.obtenerOrdenesDeUsuario(usuario);
 		
+		if(ordenes.size() == 0) {
+			System.out.println("No posee órdenes registradas");
+		}
+		
+		for (Orden orden : ordenes) {
+			System.out.println(orden.obtenerDetalle());
+		}
 	}
 
 

@@ -47,6 +47,16 @@ public class Orden {
 	}
 	
 	
+	
+	
+	public List<LineasDeOrden> getLineas() {
+		return lineas;
+	}
+
+	public void setLineas(List<LineasDeOrden> lineas) {
+		this.lineas = lineas;
+	}
+
 	public Double obtenerSubtotalProductos() {
 
 	    Double subtotal = 0.0;

@@ -1,8 +1,10 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -199,6 +201,31 @@ public class Tienda {
 
 					return orden;
 		}
+
+	public Map<Categoria, Double> obtenerTotalVendidoPorCategoria() {
+		Map<Categoria,Double> resultado = new HashMap<>();
+		
+		for (Orden orden : ordenes) {
+			if (orden.getEstado().equals(Estado.CONFIRMADA)) {
+			List<LineasDeOrden> lineas = orden.getLineas();
+			
+			for (LineasDeOrden lineasDeOrden : lineas) {
+				Categoria categoria = lineasDeOrden.getProducto().getCategoria();
+				
+				if(resultado.containsKey(categoria)) {
+					Double suma = resultado.get(categoria);
+					
+					suma += lineasDeOrden.obtenerSubtotal();
+					
+					resultado.put(categoria, suma);
+				} else {
+					resultado.put(categoria, lineasDeOrden.obtenerSubtotal());
+				}
+			}
+			}
+		}
+		return resultado;
+	}
 	
 	
 
