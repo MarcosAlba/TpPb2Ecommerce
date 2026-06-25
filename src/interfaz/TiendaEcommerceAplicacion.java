@@ -1,13 +1,20 @@
 package interfaz;
 
+import java.util.List;
 import java.util.Scanner;
 
+import dominio.Carrito;
+import dominio.CarritoVacioException;
 import dominio.Categoria;
+import dominio.Envio;
+import dominio.Estado;
 import dominio.Inventario;
+import dominio.Orden;
 import dominio.Producto;
 import dominio.ProductoDuplicadoException;
 import dominio.ProductoEstandar;
 import dominio.ProductoNoEncontradoException;
+import dominio.StockInsuficienteException;
 import dominio.Tienda;
 import dominio.Usuario;
 import dominio.UsuarioDuplicadoException;
@@ -15,314 +22,264 @@ import dominio.UsuarioNoEncontradoException;
 
 public class TiendaEcommerceAplicacion {
 	private static final Scanner teclado = new Scanner(System.in);
-    private static Tienda tienda = new Tienda();
+	private static Tienda tienda = new Tienda();
 
-    public static void main(String[] args) throws UsuarioNoEncontradoException, ProductoDuplicadoException, UsuarioDuplicadoException {
+	public static void main(String[] args)
+			throws UsuarioNoEncontradoException, ProductoDuplicadoException, UsuarioDuplicadoException {
 
-        cargarDatosIniciales(); 
+		cargarDatosIniciales();
 
-        int opcion;
+		int opcion;
 
-        do {
+		do {
 
-            opcion = menuPublico();
+			opcion = menuPublico();
 
-            switch (opcion) {
+			switch (opcion) {
 
-                case 1:
-                    registrarUsuario();
-                    break;
-                case 2:
-                    Usuario usuario = iniciarSesion();
+			case 1:
+				registrarUsuario();
+				break;
+			case 2:
+				Usuario usuario = iniciarSesion();
 
-                    if (usuario != null) {
-                        menuUsuario(usuario); 
-                    }
-                    break;
+				if (usuario != null) {
+					menuUsuario(usuario);
+				}
+				break;
 
-                case 3:
-                	menuReportes();
-                    break;
+			default:
+				System.out.println("Opción inválida.");
+			}
 
-                default:
-                    System.out.println("Opción inválida.");
-            }
-
-        } while (opcion != 3);
-    }
-    
-    
-    
-    private static int menuPublico() {
-
-        System.out.println("\n===== E-COMMERCE =====");
-        System.out.println("1. Registrarse");
-        System.out.println("2. Iniciar sesión");
-        System.out.println("3. Salir");
-        System.out.print("Seleccione opción: ");
-
-        int opcion = teclado.nextInt();
-        teclado.nextLine();
-
-        return opcion;
-    }
-    
-    
-    
-    private static void registrarUsuario() {
-
-        System.out.println("Email:");
-        String email = teclado.nextLine();
-
-        System.out.println("Nombre:");
-        String nombre = teclado.nextLine();
-
-        System.out.println("Apellido:");
-        String apellido = teclado.nextLine();
-
-        Usuario usuario = new Usuario(email, nombre, apellido);
-
-        try {
-            tienda.agregarUsuario(usuario);
-            System.out.println("Usuario registrado correctamente");
-
-        } catch (UsuarioDuplicadoException e) {
-            System.out.println("El usuario ya existe");
-        }
-    }
-    
-    
-    
-    private static Usuario iniciarSesion() throws UsuarioNoEncontradoException {
-
-        System.out.println("Ingrese email:");
-        String email = teclado.nextLine();
-
-        Usuario usuario = tienda.buscarUsuarioPorCorreo(email);
-
-        if (usuario != null) {
-            System.out.println("Bienvenido " + usuario.getNombre());
-            return usuario;
-        }
-
-        System.out.println("Usuario no encontrado");
-        return null;
-    }
-    
-    
-    
-    
-    private static void menuUsuario(Usuario usuario) {
-
-        int opcion;
-
-        do {
-
-            System.out.println("\n===== MENÚ DE " + usuario.getNombre().toUpperCase() + " =====");
-
-            System.out.println("1. Ver catálogo");
-            System.out.println("2. Buscar producto");
-            System.out.println("3. Ver carrito");
-            System.out.println("4. Agregar producto al carrito");
-            System.out.println("5. Finalizar compra");
-            System.out.println("6. Ver mis órdenes");
-            System.out.println("7. Cerrar sesión");
-
-            System.out.print("Seleccione opción: ");
-
-            opcion = teclado.nextInt();
-            teclado.nextLine();
-
-            switch (opcion) {
-
-                case 1:
-                    tienda.mostrarCatalogo();
-                    break;
-
-                case 2:
-                    buscarProducto();
-                    break;
-
-                case 3:
-                    System.out.println(usuario.getCarrito().obtenerDetalle());
-                    break;
-
-                case 4:
-                    agregarAlCarrito(usuario);
-                    break;
-
-                case 5:
-                    finalizarCompra(usuario);
-                    break;
-
-                case 6:
-                    mostrarOrdenes(usuario);
-                    break;
-
-                case 7:
-                    System.out.println("Sesión cerrada.");
-                    break;
-
-                default:
-                    System.out.println("Opción inválida.");
-            }
-
-        } while (opcion != 7);
-    }
-    
-    
-    
-    private static void mostrarOrdenes(Usuario usuario) {
-		
+		} while (opcion != 3);
 	}
 
+	private static int menuPublico() {
 
+		System.out.println("\n===== E-COMMERCE =====");
+		System.out.println("1. Registrarse");
+		System.out.println("2. Iniciar sesión");
+		System.out.println("3. Salir");
+		System.out.print("Seleccione opción: ");
+
+		int opcion = teclado.nextInt();
+		teclado.nextLine();
+
+		return opcion;
+	}
+
+	private static void registrarUsuario() {
+
+		System.out.println("Email:");
+		String email = teclado.nextLine();
+
+		System.out.println("Nombre:");
+		String nombre = teclado.nextLine();
+
+		System.out.println("Apellido:");
+		String apellido = teclado.nextLine();
+
+		Carrito carrito = new Carrito();
+
+		Usuario usuario = new Usuario(email, nombre, apellido, carrito);
+
+		try {
+			tienda.agregarUsuario(usuario);
+			System.out.println("Usuario registrado correctamente");
+
+		} catch (UsuarioDuplicadoException e) {
+			System.out.println("El usuario ya existe");
+		}
+	}
+
+	private static Usuario iniciarSesion() throws UsuarioNoEncontradoException {
+
+		System.out.println("Ingrese email:");
+		String email = teclado.nextLine();
+
+		Usuario usuario = tienda.buscarUsuarioPorCorreo(email);
+
+		if (usuario != null) {
+			System.out.println("Bienvenido " + usuario.getNombre());
+			return usuario;
+		}
+
+		System.out.println("Usuario no encontrado");
+		return null;
+	}
+
+	private static void menuUsuario(Usuario usuario) throws UsuarioNoEncontradoException {
+
+		int opcion;
+
+		do {
+
+			System.out.println("\n===== MENÚ DE " + usuario.getNombre().toUpperCase() + " =====");
+
+			System.out.println("1. Ver catálogo");
+			System.out.println("2. Buscar producto");
+			System.out.println("3. Ver carrito");
+			System.out.println("4. Agregar producto al carrito");
+			System.out.println("5. Finalizar compra");
+			System.out.println("6. Ver mis órdenes");
+			System.out.println("7. Cerrar sesión");
+
+			System.out.print("Seleccione opción: ");
+
+			opcion = teclado.nextInt();
+			teclado.nextLine();
+
+			switch (opcion) {
+
+			case 1:
+				String catalogo = tienda.mostrarCatalogo();
+				System.out.println(catalogo);
+				break;
+
+			case 2:
+				buscarProducto();
+				break;
+
+			case 3:
+				System.out.println(usuario.getCarrito().obtenerDetalle());
+				break;
+
+			case 4:
+				agregarAlCarrito(usuario);
+				break;
+
+			case 5:
+				finalizarCompra(usuario);
+				break;
+
+			case 6:
+				mostrarOrdenes(usuario);
+				break;
+
+			case 7:
+				System.out.println("Sesión cerrada.");
+				break;
+
+			default:
+				System.out.println("Opción inválida.");
+			}
+
+		} while (opcion != 7);
+	}
+
+	private static void mostrarOrdenes(Usuario usuario) {
+		List<Orden> ordenes = tienda.obtenerOrdenesDeUsuario(usuario);
+
+		if (ordenes.size() == 0) {
+			System.out.println("No posee órdenes registradas");
+		}
+
+		for (Orden orden : ordenes) {
+			System.out.println(orden.obtenerDetalle());
+		}
+	}
 
 	private static void agregarAlCarrito(Usuario usuario) {
 
-        System.out.println("ID producto:");
-        int id = teclado.nextInt();
+		System.out.println(tienda.mostrarCatalogo());
 
-        System.out.println("Cantidad:");
-        int cantidad = teclado.nextInt();
+		System.out.println("ID producto:");
+		int id = teclado.nextInt();
 
-        try {
-            tienda.agregarProductoAlCarrito(usuario, id, cantidad);
-            System.out.println("Producto agregado al carrito");
+		System.out.println("Cantidad:");
+		int cantidad = teclado.nextInt();
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    private static void buscarProducto() {
-    	System.out.println("Ingrese el id del producto");
-    	Integer id = teclado.nextInt();
-    	try {
-    	Producto productoBuscado = tienda.buscarProductoPorId(id);
-    	System.out.println(productoBuscado.obtenerDetalle());
-    	} catch (ProductoNoEncontradoException e) {
-    		System.out.println(e.getMessage());
-    	}
-    }
-    
-    
-    
-    
-    private static void finalizarCompra(Usuario usuario) {
+		try {
 
-        try {
-            System.out.println("Seleccione envío:");
-            System.out.println("1. Gratis");
-            System.out.println("2. Estándar");
-            System.out.println("3. Express");
+			tienda.agregarProductoAlCarrito(usuario, id, cantidad);
 
-            int opcion = teclado.nextInt();
+			System.out.println("Producto agregado al carrito");
 
-            Envio envio;
+		} catch (StockInsuficienteException e) {
 
-            switch (opcion) {
-                case 1:
-                    envio = new EnvioGratis();
-                    break;
-                case 2:
-                    envio = new EnvioEstandar();
-                    break;
-                case 3:
-                    envio = new EnvioExpress();
-                    break;
-                default:
-                    System.out.println("Opción inválida");
-                    return;
-            }
+			System.out.println("Stock insuficiente");
 
-            Orden orden = tienda.finalizarCompra(usuario, envio);
+		} catch (ProductoNoEncontradoException e) {
 
-            System.out.println("Compra realizada con éxito");
-            System.out.println(orden.obtenerDetalle());
+			System.out.println(e.getMessage());
 
-        } catch (CarritoVacioException e) {
-            System.out.println("El carrito está vacío");
-        }
-    }
-    
-    
-    
-    private static void cargarDatosIniciales() throws ProductoDuplicadoException, UsuarioDuplicadoException {
+		}
+	}
 
-        Inventario inv = new Inventario("M1", 10, 0);
+	private static void buscarProducto() {
+		System.out.println("Ingrese el id del producto");
+		Integer id = teclado.nextInt();
+		try {
+			Producto productoBuscado = tienda.buscarProductoPorId(id);
+			System.out.println(productoBuscado.obtenerDetalle());
+		} catch (ProductoNoEncontradoException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
-        Producto mouse = new ProductoEstandar(
-            "Mouse Gamer",
-            Categoria.ELECTRONICA,
-            5000.0,
-            inv,
-            null
-        );
+	private static void finalizarCompra(Usuario usuario) throws UsuarioNoEncontradoException {
 
-        tienda.agregarProducto(mouse);
+		try {
+			System.out.println("Seleccione envío:");
+			System.out.println("1. Gratis");
+			System.out.println("2. Estándar");
+			System.out.println("3. Express");
 
-        tienda.agregarUsuario(new Usuario("admin@gmail.com", "Admin", "System"));
-    }
+			int opcion = teclado.nextInt();
 
-    
-    
-    private static void menuReportes() {
-    	int opcion;
-    	
-    	do {
+			Envio envio;
 
-            System.out.println("\n===== REPORTES DE TIENDA =====");
+			switch (opcion) {
+			case 1:
+				envio = new EnvioGratis();
+				break;
+			case 2:
+				envio = new EnvioEstandar();
+				break;
+			case 3:
+				envio = new EnvioExpress();
+				break;
+			default:
+				System.out.println("Opción inválida");
+				return;
+			}
 
-            System.out.println("1. Producto más vendido");
-            System.out.println("2. Producto más vendido por categoría");
-            System.out.println("3. Envío más utilizado");
-            System.out.println("4. Volver");
+			System.out.println("Ingrese el código: ");
+			String codigo = teclado.nextLine();
 
-            opcion = teclado.nextInt();
-            teclado.nextLine();
+			System.out.println("Ingrese el estado de la orden: ");
 
+			Orden orden = tienda.generarOrden(usuario.getEmail(), codigo, Estado.CONFIRMADA, envio);
 
-            switch(opcion) {
+			if (orden != null) {
+				System.out.println("Compra realizada con éxito");
+				System.out.println(orden.obtenerDetalle());
+			}
 
-                case 1:
-                    mostrarProductoMasVendido();
-                    break;
+		} catch (CarritoVacioException e) {
+			System.out.println("El carrito está vacío");
+		}
+	}
 
-                case 2:
-                    mostrarProductoMasVendidoPorCategoria();
-                    break;
+	private static void cargarDatosIniciales() throws ProductoDuplicadoException, UsuarioDuplicadoException {
 
-                case 3:
-                    mostrarEnvioMasUtilizado();
-                    break;
+		Inventario inv1 = new Inventario("M1", 10, 0);
+		Inventario inv2 = new Inventario("T1", 15, 0);
+		Inventario inv3 = new Inventario("A1", 8, 0);
 
-                case 4:
-                    System.out.println("Volviendo al menú principal");
-                    break;
+		Producto mouse = new ProductoEstandar("Mouse Gamer", Categoria.ELECTRONICA, 5000.0, inv1, null);
 
-                default:
-                    System.out.println("Opción inválida");
-            }
+		Producto teclado = new ProductoEstandar("Teclado Mecánico", Categoria.ELECTRONICA, 12000.0, inv2, null);
 
-        } while(opcion != 4);
-    	
-    }
-    
-    
-    private static void mostrarProductoMasVendido() {
+		Producto auriculares = new ProductoEstandar("Auriculares", Categoria.ELECTRONICA, 8000.0, inv3, null);
 
-        Producto producto = tienda.obtenerProductoMasVendido();
+		tienda.agregarProducto(mouse);
+		tienda.agregarProducto(teclado);
+		tienda.agregarProducto(auriculares);
 
-        if(producto != null) {
+		tienda.agregarUsuario(new Usuario("admin@gmail.com", "Admin", "System", null));
+	}
 
-            System.out.println("Producto más vendido: "
-                               + producto.getNombre());
-
-        } else {
-
-            System.out.println("No existen ventas todavía");
-        }
-    }
-    
+	
 }
