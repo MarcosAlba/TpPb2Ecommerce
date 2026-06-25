@@ -47,9 +47,6 @@ public class TiendaEcommerceAplicacion {
 					menuUsuario(usuario);
 				}
 				break;
-			/*
-			 * case 3: menuReportes(); break;
-			 */
 
 			default:
 				System.out.println("Opción inválida.");
@@ -284,48 +281,5 @@ public class TiendaEcommerceAplicacion {
 		tienda.agregarUsuario(new Usuario("admin@gmail.com", "Admin", "System", null));
 	}
 
-	/*
-	 * private static void menuReportes() { int opcion;
-	 * 
-	 * do {
-	 * 
-	 * System.out.println("\n===== REPORTES DE TIENDA =====");
-	 * 
-	 * System.out.println("1. Producto más vendido");
-	 * System.out.println("2. Producto más vendido por categoría");
-	 * System.out.println("3. Envío más utilizado");
-	 * System.out.println("4. Volver");
-	 * 
-	 * opcion = teclado.nextInt(); teclado.nextLine();
-	 * 
-	 * 
-	 * switch(opcion) {
-	 * 
-	 * case 1: mostrarProductoMasVendido(); break;
-	 * 
-	 * case 2: mostrarProductoMasVendidoPorCategoria(); break;
-	 * 
-	 * case 3: mostrarEnvioMasUtilizado(); break;
-	 * 
-	 * case 4: System.out.println("Volviendo al menú principal"); break;
-	 * 
-	 * default: System.out.println("Opción inválida"); }
-	 * 
-	 * } while(opcion != 4);
-	 * 
-	 * }
-	 * 
-	 * 
-	 * private static void mostrarProductoMasVendido() {
-	 * 
-	 * Producto producto = tienda.obtenerProductoMasVendido();
-	 * 
-	 * if(producto != null) {
-	 * 
-	 * System.out.println("Producto más vendido: " + producto.getNombre());
-	 * 
-	 * } else {
-	 * 
-	 * System.out.println("No existen ventas todavía"); } }
-	 */
+	
 }
