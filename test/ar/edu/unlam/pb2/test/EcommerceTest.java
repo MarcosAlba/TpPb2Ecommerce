@@ -23,6 +23,7 @@ import dominio.LineaDeCarrito;
 import dominio.LineasDeOrden;
 import dominio.Oferta;
 import dominio.OfertaConPorcentaje;
+import dominio.OfertaMontoFijo;
 import dominio.Opcion;
 import dominio.Orden;
 import dominio.ProductoEstandar;
@@ -445,6 +446,30 @@ public class EcommerceTest {
 
 	}
 
+	
+	@Test // 16
+	public void DadoUnProductoConUnaOfertaDeMontoFijoAsociadaCalcularPrecioFinalDevuelveElPrecioConElDescuentoPorMontoFijoAplicadoSinQuedarPorDebajoDeCero(){
+		 Oferta oferta = new OfertaMontoFijo(1000.0);
+	        Producto producto = new ProductoEstandar("Computadora", Categoria.ELECTRONICA, 5000.0, null, oferta);
+
+	        Double precioFinal = producto.calcularPrecioFinal();
+
+	        assertEquals(4000.0, precioFinal, 0.001);
+	}
+	
+	@Test // 18
+	public void DadoUnProductoPersonalizadoConNivelDePersonalizacionDeluxeCalcularPrecioFinalIncluyeElRecargoCorrespondienteAEseNivel() { 
+		Opcion opcionDeluxe = new Opcion("Deluxe", 500.0);
+	    ProductoPersonalizado producto = new ProductoPersonalizado("Camiseta", Categoria.MODA, 1000.0, null, null);
+	    producto.agregarOpcion(opcionDeluxe);
+
+	    Double precioFinal = producto.calcularPrecioFinal();
+
+	    assertEquals(1500.0, precioFinal, 0.001);
+	}
+	
+
+
 	@Test // 19
 	public void dadoQueExisteUnaOrdenConEnvioExpressElCostoTotalDeLaOrdenIncluyeElCostoDelEnvio() {
 		Carrito carrito = new Carrito();
@@ -489,4 +514,7 @@ public class EcommerceTest {
 		assertEquals(totalEsperado, totalObtenido);
 	}
 
+
 }
+	
+
