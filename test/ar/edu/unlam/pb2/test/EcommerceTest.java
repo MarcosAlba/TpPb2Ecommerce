@@ -39,7 +39,7 @@ import interfaz.EnvioGratis;
 import dominio.Producto;
 
 public class EcommerceTest {
-	@Test
+	@Test //1
 	public void dadoQueExisteUnaTiendaSePuedeAgregarUnProducto() {
 		Tienda tienda = new Tienda();
 		Inventario inventario = new Inventario("0317-0471", 10, 0);
@@ -52,7 +52,7 @@ public class EcommerceTest {
 		assertTrue(seAgrego);
 	}
 
-	@Test
+	@Test //2
 	public void dadoQueExisteUnaTiendaSePuedeEliminarUnProducto() {
 		Tienda tienda = new Tienda();
 		Inventario inventario = new Inventario("0317-0471", 10, 0);
@@ -68,7 +68,7 @@ public class EcommerceTest {
 //		assertEquals(tienda.getProductos().size(), 0); // Funciona de las 2 maneras
 	}
 
-	@Test(expected = ProductoNoEncontradoException.class)
+	@Test(expected = ProductoNoEncontradoException.class) //3
 	public void dadoQueExisteUnaTiendaCuandoBuscoUnProductoPorIdQueNoExisteLanzaUnaExcepcion()
 			throws ProductoNoEncontradoException {
 		Tienda tienda = new Tienda();
@@ -85,7 +85,7 @@ public class EcommerceTest {
 //		assertNull(prodBuscado);
 	}
 
-	@Test
+	@Test //4
 	public void dadoQueExisteUnaTiendaSePuedeAgregarUnUsuarioCorrectamente() throws UsuarioDuplicadoException {
 		Tienda tienda = new Tienda();
 		Usuario user = new Usuario("marcosalba@gmail.com", "Marcos", "Albarracin", null);
@@ -95,7 +95,7 @@ public class EcommerceTest {
 		assertTrue(seAgrego);
 	}
 
-	@Test(expected = UsuarioDuplicadoException.class)
+	@Test(expected = UsuarioDuplicadoException.class) //5
 	public void dadoQueExisteUnaTiendaCuandoQuieroAgregarDosUsuariosConElMismoMailLanzaExcepcion()
 			throws UsuarioDuplicadoException {
 		Tienda tienda = new Tienda();
@@ -106,7 +106,7 @@ public class EcommerceTest {
 		tienda.agregarUsuario(user2);
 	}
 
-	@Test
+	@Test //6
 	public void dadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSeVerificaSiTieneStock()
 			throws ProductoNoEncontradoException, UsuarioDuplicadoException, StockInsuficienteException {
 		Tienda tienda = new Tienda();
@@ -122,12 +122,12 @@ public class EcommerceTest {
 
 		tienda.agregarUsuario(usuario);
 
-		Boolean resultado = tienda.agregarProductoAlCarrito(usuario, 1, 3);
+		Boolean resultado = tienda.agregarProductoAlCarrito(usuario, producto.getId(), 3);
 
 		assertTrue(resultado);
 	}
 
-	@Test(expected = StockInsuficienteException.class)
+	@Test(expected = StockInsuficienteException.class) //7
 	public void dadoQueExisteUnaTiendaCuandoAgregoUnProductoAlCarritoSinStockSuficienteLanzaUnaExcepción()
 			throws StockInsuficienteException, UsuarioDuplicadoException, ProductoNoEncontradoException {
 		Tienda tienda = new Tienda();
@@ -320,7 +320,7 @@ public class EcommerceTest {
 		assertEquals(556442.4, precioTotal, 0.01);
 	}
 
-	@Test
+	@Test //14
 	public void dadoQueExisteUnaTiendaCuandoConsultoLosProductosObtengoElTotalVendidoPorCadaCategoria()
 			throws UsuarioDuplicadoException, CarritoVacioException, UsuarioNoEncontradoException {
 		Tienda tienda = new Tienda();
@@ -444,6 +444,42 @@ public class EcommerceTest {
 	    assertEquals(totalVendidoPorHogar, (Double) 4.5187348E7);
 
 	}
+	
+	@Test // 15
+	public void  DadoUnProductoConUnaOfertaPorcentualAsociadaCalcularPrecioFinalDevuelveElPrecioConElDescuentoPorCentajeAplicado() {
+		
+		Inventario inventario = new Inventario("SKU123", 10, 0); // stock inicial
+        Oferta oferta = new OfertaConPorcentaje(20.0); // 20% de descuento
+        Producto producto = new ProductoEstandar("Silla", Categoria.HOGAR, 1000.0, inventario, oferta);
+
+        
+        Double precioFinal = producto.calcularPrecioFinal();
+
+        assertEquals(800.0, precioFinal, 0.01); 
+	}
+	
+	@Test // 17
+	public void  DadoUnProductoSinOfertaAsociadaCalcularPrecioFinalDevuelveElPrecioSinNingunDescuento() {
+		
+		
+	    Inventario inventario = new Inventario("SKU124", 5, 0);
+	    Producto producto = new ProductoEstandar("Mesa", Categoria.HOGAR, 2000.0, inventario, null);
+
+	    
+	    Double precioFinal = producto.calcularPrecioFinal();
+	    inventario.reservar(2);
+
+	 
+	    assertEquals(2000.0, precioFinal, 0.01);
+	    assertEquals(Integer.valueOf(3), inventario.getUnidades());
+	    assertEquals(Integer.valueOf(2), inventario.getReservadas());
+
+	    String detalle = producto.obtenerDetalle();
+	    assertTrue(detalle.contains(producto.calcularPrecioFinal().toString()));
+	
+	}
+	
+	
 
 	@Test // 19
 	public void dadoQueExisteUnaOrdenConEnvioExpressElCostoTotalDeLaOrdenIncluyeElCostoDelEnvio() {
